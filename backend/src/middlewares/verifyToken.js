@@ -5,11 +5,12 @@ function verifyToken(req, res, next) {
   try {
     const token = req.headers['x-access-token'];
 
-    jwt.verify(token, process.env.JWT_SECRET_KEY, error => {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (error, decoded) => {
       if(error) {
         return res.status(401).json({ message: 'Unauthorized' });
       }
-
+      
+      req.userId = decoded.id;
       next();
     }); 
   } catch(error) {
