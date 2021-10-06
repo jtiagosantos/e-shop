@@ -40,7 +40,7 @@ class UserController {
 
       delete user.password;
 
-      return res.status(200).json({ user, token });
+      return res.status(200).json({ token });
     } catch(error) {
       res.status(500).json({ error: error.message });
     }
