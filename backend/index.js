@@ -1,5 +1,5 @@
 const express = require('express');
-require('./database');
+require('./database/config');
 
 const userRoutes = require('./src/routes/user.routes');
 const productRoutes = require('./src/routes/product.routes');
