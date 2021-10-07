@@ -1,3 +1,9 @@
+const redis = require('promise-redis')();
+const redisClient = redis.createClient({
+  host:'redis-server', 
+  port: 6379
+});
+
 const Product = require('../models/Product');
 
 class ProductController {
@@ -14,8 +20,10 @@ class ProductController {
 
   async readProducts(req, res) {
     try {
+      console.time('tempo');
       const products = await Product.find();
       res.status(200).json({ products });
+      console.timeEnd('tempo');
     } catch(error) {
       res.status(500).json({ error: error.message });
     }

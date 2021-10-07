@@ -23,3 +23,9 @@ services:
       - '27017:27017'
     volumes:
       - ./data/db:/data/db
+
+  redis-server:
+    image: 'redis'
+    container_name: REDIS_DB
+    ports:
+      - '6379:6379'
