@@ -1,8 +1,4 @@
-const redis = require('promise-redis')();
-const redisClient = redis.createClient({
-  host:'redis-server', 
-  port: 6379
-});
+const { syncRedisGet, syncRedisSet } = require('../../redis/config');
 
 const Product = require('../models/Product');
 
@@ -12,6 +8,7 @@ class ProductController {
 
     try {
       const product = await new Product(body).save();
+      await syncRedisSet('products', '');
       res.status(200).json({ error: false, product });
     } catch(error) {
       res.status(500).json({ error: error.message });
@@ -20,10 +17,15 @@ class ProductController {
 
   async readProducts(req, res) {
     try {
-      console.time('tempo');
-      const products = await Product.find();
-      res.status(200).json({ products });
-      console.timeEnd('tempo');
+      const products = await syncRedisGet('products');
+
+      if(!products) {
+        const products = await Product.find();
+        await syncRedisSet('products', JSON.stringify(products));
+        return res.status(200).json({ products });
+      }
+
+      res.status(200).json({ products: JSON.parse(products) });      
     } catch(error) {
       res.status(500).json({ error: error.message });
     }
@@ -34,8 +36,11 @@ class ProductController {
 
     try {
       const product = await Product.findByIdAndDelete(id);
+
       if(product) res.status(200).json({ error: false, message: 'Product deleted!' });
       else res.status(404).json({ error: false, message: 'Product not found!' });
+      
+      await syncRedisSet('products', '');
     } catch(error) {
       res.status(500).json({ error: error.message });
     }
@@ -49,7 +54,11 @@ class ProductController {
 
     try {
       const productUpdated = await Product.findByIdAndUpdate(id, body, { new: true });
-      res.status(200).json({ error: false, message: 'Product updated!', product: productUpdated });
+
+      if(productUpdated) res.status(200).json({ error: false, message: 'Product updated!', product: productUpdated });
+      else res.status(404).json({ error: false, message: 'Product not found!' });
+
+      await syncRedisSet('products', '');
     } catch(error) {
       res.status(500).json({ error: error.message });
     }
