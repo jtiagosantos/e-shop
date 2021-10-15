@@ -1,18 +1,26 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const validator = require('validator');
 require('dotenv').config();
 
 class UserController {
   async register(req, res) {
     const body = req.body;
-    const user = await User.findOne({ email: body.email });
+    const { email } = req.body;
+    const user = await User.findOne({ email });
 
     if(!user) {
       try {
-        body.password = bcrypt.hashSync(body.password, 10);
-        const newUser = await new User(body).save();
-        res.status(200).json({ error: false, user: newUser });
+        const isValidEmail = validator.isEmail(email);
+
+        if(isValidEmail) {
+          body.password = bcrypt.hashSync(body.password, 10);
+          const user = await new User(body).save();
+          res.status(200).json({ error: false, user });
+        }else {
+          res.status(400).json({ message: 'E-mail inválido!' });
+        }
       } catch(error) {
         res.status(500).json({ error: error.message });
       }
