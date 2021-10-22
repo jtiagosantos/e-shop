@@ -10,6 +10,7 @@ export const Container = styled.div`
   justify-content: space-between;
 
   padding: 0 20px;
+  margin-bottom: 30px;
 `;
 
 export const TitleContainer = styled.div`

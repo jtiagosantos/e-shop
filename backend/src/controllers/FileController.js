@@ -12,7 +12,7 @@ class FileController {
         filename: file.originalname,
       }).save();
 
-      await syncRedisSet('files', '');
+      //await syncRedisSet('files', '');
 
       res.status(200).json({ imageFile });
     } catch(error) {
@@ -25,12 +25,15 @@ class FileController {
       const files = await syncRedisGet('files');
 
       if(!files) {
-        const files = await File.find();
-        await syncRedisSet('files', JSON.stringify(files));
-        res.status(200).json({ files });
+        const files = await File.find().populate(
+          'product_id',
+          'name price inventory'
+        ).sort({ _id: -1 });
+        //await syncRedisSet('files', JSON.stringify(files));
+        res.status(200).json(files);
       }
 
-      res.status(200).json({ files: JSON.parse(files) });
+      res.status(200).json(JSON.parse(files));
     } catch(error) {
       res.status(500).json({ error: error.message });
     }

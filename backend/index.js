@@ -1,6 +1,8 @@
 const express = require('express');
 require('./database/config');
 
+const cors = require('cors');
+
 const userRoutes = require('./src/routes/user.routes');
 const productRoutes = require('./src/routes/product.routes');
 const cartRoutes = require('./src/routes/cart.routes');
@@ -9,6 +11,8 @@ const addressRoutes = require('./src/routes/address.routes');
 
 const app = express();
 const PORT = 3000;
+
+app.use(cors());
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
