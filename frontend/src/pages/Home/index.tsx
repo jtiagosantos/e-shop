@@ -7,13 +7,17 @@ import ProductCard from '../../components/ProductCard';
 
 import { ProductContainer, Message } from './styles';
 
+import { useSearchContext } from '../../hooks/useSearchContext';
+
 export default function Home(): JSX.Element {
   const [products, setProducts] = useState<TypeProduct[]>([]);
+  const [wantedProducts, setWantedProducts] = useState<TypeProduct[]>([])
+  
+  const { search } = useSearchContext();
 
   useEffect(() => {
     async function fetchProductsData() {
       const data = await GetProducts();
-      console.log(data);
       setProducts(data)
     }
 
@@ -24,18 +28,33 @@ export default function Home(): JSX.Element {
     }
   }, []);
 
+  useEffect(() => {
+    setWantedProducts(products.filter(product => product.product_id.name.includes(search)));
+  }, [search]);
+
   return(
     <>
       <Navbar />
 
       {products.length > 0 ? (
         <ProductContainer>
-          {products?.map(product => (
-            <ProductCard 
-              filename={product.filename}
-              product_id={product.product_id}
-            />
-          ))}
+          {search === '' ? (
+            products?.map(product => (
+              <ProductCard 
+                key={product._id}
+                filename={product.filename}
+                product_id={product.product_id}
+              />
+            ))
+          ) : (
+            wantedProducts?.map(product => (
+              <ProductCard 
+                key={product._id}
+                filename={product.filename}
+                product_id={product.product_id}
+              />
+            ))
+          )}
         </ProductContainer>
       ) : (
         <Message>Sem produtos à venda!</Message>
