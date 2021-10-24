@@ -16,4 +16,9 @@ async function GetProducts() {
   return data;
 };
 
-export { GetProducts };
+async function GetProduct(id: string) {
+  const { data } = await api.get<TypeProduct[]>(`api/v1/files/${id}`);
+  return data;
+};
+
+export { GetProducts, GetProduct };

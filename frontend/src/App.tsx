@@ -1,11 +1,17 @@
+import { BrowserRouter, Switch } from 'react-router-dom'
+
 import { GlobalStyles } from "./styles/GlobalStyles";
-import Home from "./pages/Home";
+import Routes from './routes';
 
 function App() {
   return (
     <>
       <GlobalStyles />
-      <Home />
+      <BrowserRouter>
+        <Switch>
+          <Routes />
+        </Switch>
+      </BrowserRouter>
     </>
   );
 }

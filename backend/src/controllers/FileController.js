@@ -27,13 +27,28 @@ class FileController {
       if(!files) {
         const files = await File.find().populate(
           'product_id',
-          'name price inventory'
+          'name price inventory description'
         ).sort({ _id: -1 });
         //await syncRedisSet('files', JSON.stringify(files));
         res.status(200).json(files);
       }
 
       res.status(200).json(JSON.parse(files));
+    } catch(error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  async read(req, res) {
+    try {
+      const { id } = req.params;
+
+      const file = await File.find({ _id: id }).populate(
+        'product_id',
+        'name price inventory description'
+      );
+      if(file) res.status(200).json(file)
+      else res.status(404).json('Product not found!');
     } catch(error) {
       res.status(500).json({ error: error.message });
     }

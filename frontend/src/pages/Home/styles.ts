@@ -6,6 +6,8 @@ export const ProductContainer = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  max-width: 1260px;
+  margin: 0 auto;
 `;
 
 export const Message = styled.h4`

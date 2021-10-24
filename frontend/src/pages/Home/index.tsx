@@ -29,7 +29,9 @@ export default function Home(): JSX.Element {
   }, []);
 
   useEffect(() => {
-    setWantedProducts(products.filter(product => product.product_id.name.includes(search)));
+    setWantedProducts(products.filter(product => (
+      product.product_id.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+    )));
   }, [search]);
 
   return(
@@ -41,6 +43,7 @@ export default function Home(): JSX.Element {
           {search === '' ? (
             products?.map(product => (
               <ProductCard 
+                id={product._id}
                 key={product._id}
                 filename={product.filename}
                 product_id={product.product_id}
@@ -49,6 +52,7 @@ export default function Home(): JSX.Element {
           ) : (
             wantedProducts?.map(product => (
               <ProductCard 
+                id={product._id}
                 key={product._id}
                 filename={product.filename}
                 product_id={product.product_id}
