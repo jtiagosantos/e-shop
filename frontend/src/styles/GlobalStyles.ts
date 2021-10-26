@@ -17,4 +17,8 @@ export const GlobalStyles = createGlobalStyle`
   input {
     outline: none;
   }
+
+  textarea {
+    outline: none;
+  }
 `;

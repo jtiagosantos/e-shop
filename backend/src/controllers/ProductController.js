@@ -9,7 +9,7 @@ class ProductController {
     try {
       const product = await new Product(body).save();
       await syncRedisSet('products', '');
-      res.status(200).json({ error: false, product });
+      res.status(200).json(product);
     } catch(error) {
       res.status(500).json({ error: error.message });
     }

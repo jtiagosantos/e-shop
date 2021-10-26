@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { GetProduct } from '../../services/ProductServices';
+import { GetProductService } from '../../services/ProductServices';
 import { TypeProduct } from '../../services/ProductServices';
 import Navbar from '../Navbar';
 
@@ -20,7 +20,7 @@ import {
   BottomProductContainer,
   TitleDescription,
   Description
- } from './styles';
+} from './styles';
 
 type ProductProps = {
   match: {
@@ -38,7 +38,7 @@ export default function Product({ match }: ProductProps): JSX.Element {
 
   useEffect(() => {
     async function fetchProductData() {
-      const data = await GetProduct(id);
+      const data = await GetProductService(id);
       setProduct(data[0]);
       setImage(require(`../../../../backend/public/uploads/${data[0].filename}`).default);
     };

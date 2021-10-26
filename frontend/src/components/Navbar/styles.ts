@@ -11,6 +11,7 @@ export const Container = styled.div`
 
   padding: 0 20px;
   margin-bottom: 30px;
+
 `;
 
 export const TitleContainer = styled.div`
@@ -53,8 +54,13 @@ export const Action = styled.p`
   }
 `;
 
-export const CartIcon = styled.i`
+export const IconsContainer = styled.div`
+  display: flex;
+  gap: 30px;
+`;
+
+export const Icon = styled.i`
   font-size: 26px;
-  margin-left: 100px;
+  color: #fff;
   cursor: pointer;
 `;

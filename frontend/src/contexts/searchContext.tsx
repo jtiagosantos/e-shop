@@ -1,11 +1,11 @@
 import { createContext, useState, ReactNode, Dispatch, SetStateAction } from 'react';
 
-type TypecreateContext = {
+type TypeCreateContext = {
   search: string,
   setSearch: Dispatch<SetStateAction<string>>,
 };
 
-export const SearchContext = createContext({} as TypecreateContext);
+export const SearchContext = createContext({} as TypeCreateContext);
 
 type searchContextProviderProps = {
   children: ReactNode,

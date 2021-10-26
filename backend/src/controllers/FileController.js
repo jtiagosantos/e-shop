@@ -12,7 +12,7 @@ class FileController {
         filename: file.originalname,
       }).save();
 
-      //await syncRedisSet('files', '');
+      await syncRedisSet('files', '');
 
       res.status(200).json({ imageFile });
     } catch(error) {
@@ -29,7 +29,7 @@ class FileController {
           'product_id',
           'name price inventory description'
         ).sort({ _id: -1 });
-        //await syncRedisSet('files', JSON.stringify(files));
+        await syncRedisSet('files', JSON.stringify(files));
         res.status(200).json(files);
       }
 

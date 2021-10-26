@@ -11,14 +11,19 @@ export type TypeProduct = {
   },
 };
 
-async function GetProducts() {
+async function GetProductsService() {
   const { data } = await api.get<TypeProduct[]>('api/v1/files');
   return data;
 };
 
-async function GetProduct(id: string) {
+async function GetProductService(id: string) {
   const { data } = await api.get<TypeProduct[]>(`api/v1/files/${id}`);
   return data;
 };
 
-export { GetProducts, GetProduct };
+async function AddProductService(body: Object) {
+  const { data } = await api.post(`api/v1/create_product`, { body });
+  return data;
+};
+
+export { GetProductsService, GetProductService, AddProductService };

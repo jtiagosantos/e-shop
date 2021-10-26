@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { GetProducts, TypeProduct } from '../../services/ProductServices';
+import { GetProductsService, TypeProduct } from '../../services/ProductServices';
 
 import Navbar from "../../components/Navbar";
 import ProductCard from '../../components/ProductCard';
@@ -17,7 +17,7 @@ export default function Home(): JSX.Element {
 
   useEffect(() => {
     async function fetchProductsData() {
-      const data = await GetProducts();
+      const data = await GetProductsService();
       setProducts(data)
     }
 
