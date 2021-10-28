@@ -16,6 +16,20 @@ export const GlobalStyles = createGlobalStyle`
 
   input {
     outline: none;
+
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
+  input[type=number] {
+    -moz-appearance: textfield;
   }
 
   textarea {

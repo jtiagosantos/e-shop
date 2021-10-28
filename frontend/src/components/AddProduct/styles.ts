@@ -7,14 +7,15 @@ export const Container = styled.div`
   align-items: center;
 `;
 
-export const Form = styled.form``;
-
-export const InputContainer = styled.div`
+export const Form = styled.form`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-areas: "a a"
-                       "b c"
-                       "d d";
+                       "b b"
+                       "c d"
+                       "e e";
+  grid-gap: 10px;
+  max-width: 800px;
 `;
 
 export const Input = styled.input`
@@ -33,17 +34,22 @@ export const Input = styled.input`
 
   &:nth-child(2) {
     grid-area: b;
-    margin: 15px 10px 15px 0;
+    //margin: 15px 10px 15px 0;
   }
 
   &:nth-child(3) {
     grid-area: c;
-    margin: 15px 0 15px 10px;
+    //margin: 15px 0 15px 10px;
+  }
+
+  &:nth-child(4) {
+    grid-area: d;
+    //margin: 15px 0 15px 10px;
   }
 `;
 
 export const TextArea = styled.textarea`
-  grid-area: d;
+  grid-area: e;
   resize: none;
 
   background: #fff;
@@ -56,14 +62,6 @@ export const TextArea = styled.textarea`
   color: #141414;
 `;
 
-export const ButtonContainer = styled.div`
-  min-width: 684px;
-  max-width: 684px;
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 30px;
-`;
-
 export const Button = styled.button`
   padding: 10px;
   height: 50px;
@@ -71,6 +69,8 @@ export const Button = styled.button`
   border: none;
   background: #377A8B;
   cursor: pointer;
+
+  margin-top: 10px;
 
   &:hover {
     filter: brightness(0.9);

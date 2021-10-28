@@ -11,6 +11,17 @@ export type TypeProduct = {
   },
 };
 
+type BodyProduct = {
+  name: string,
+  price: number,
+  inventory: number,
+  description: string,
+};
+
+type ResponseAddProduct = {
+  _id: string,
+};
+
 async function GetProductsService() {
   const { data } = await api.get<TypeProduct[]>('api/v1/files');
   return data;
@@ -21,8 +32,8 @@ async function GetProductService(id: string) {
   return data;
 };
 
-async function AddProductService(body: Object) {
-  const { data } = await api.post(`api/v1/create_product`, { body });
+async function AddProductService(body: BodyProduct) {
+  const { data } = await api.post<ResponseAddProduct>(`api/v1/create_product`, body);
   return data;
 };
 
