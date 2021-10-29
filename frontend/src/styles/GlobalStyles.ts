@@ -35,4 +35,8 @@ export const GlobalStyles = createGlobalStyle`
   textarea {
     outline: none;
   }
+
+  select {
+    outline: none;
+  }
 `;

@@ -7,10 +7,16 @@ import { AddFileService } from "../../services/FileServices";
 import { 
   Container,
   Input,
+  InputFile,
+  Label,
   TextArea,
   Button,
   TextButton,
-  Form
+  Form,
+  OptionList,
+  ErrorContainer,
+  ErrorMessage,
+  ErrorIcon
 } from "./styles";
 
 type Product = {
@@ -23,38 +29,91 @@ type Product = {
 };
 
 export default function AddProduct(): JSX.Element {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   async function onSubmitForm(data: Product) {
     const product = await AddProductService({
       name: data.name,
       price: data.price,
-      inventory: data.inventory,
+      inventory: Number(data.inventory),
       description: data.description
     });
-
-    console.log(product);
 
     const formData = new FormData();
     formData.append('image', data.image[0]);
 
-    const file = await AddFileService(formData, product._id);
-    console.log(file);
+    await AddFileService(formData, product._id);
   };
 
   return(
     <Container>
       <Navbar showOnlyTitle={true} />
-        <Form onSubmit={handleSubmit(onSubmitForm)}>
-          <Input {...register('image')} type='file' />
-          <Input {...register('name')} type='text' placeholder='Nome do produto' />
-          <Input {...register('price')} type='number' placeholder='Preço(R$)' />
-          <Input {...register('inventory')} type='number' placeholder='Qtd. estoque' />
-          <TextArea {...register('description')} placeholder='Descrição do produto' />
-          <Button type="submit">
-            <TextButton>Adicionar Produto</TextButton>
-          </Button>
-        </Form>
+      <Form onSubmit={handleSubmit(onSubmitForm)}>
+        <InputFile>
+          <Label htmlFor='file'>Selecione uma foto do produto</Label>
+          <Input 
+            id='file'
+            {...register('image', { required: true })} 
+            type='file' 
+            accept="image/png, image/jpeg, image/jpg"
+          />
+        </InputFile>
+        <Input 
+          {...register('name', { required: true })} 
+          type='text' 
+          placeholder='Nome do produto' 
+        />
+        <Input 
+          {...register('price', { required: true })} 
+          type='number' 
+          placeholder='Preço(R$)' 
+        />
+        <OptionList 
+          {...register('inventory', { required: true })}
+        >
+          <option disabled selected value="">Selecione a quantidade de estoque</option>
+          <option>10</option>
+          <option>20</option>
+          <option>30</option>
+          <option>40</option>
+          <option>50</option>
+          <option>100</option>
+        </OptionList>
+        <TextArea 
+          {...register('description', { required: true })} 
+          placeholder='Descrição do produto' 
+        />
+        <Button type="submit">
+          <TextButton>Adicionar Produto</TextButton>
+        </Button>
+      </Form>
+      <ErrorContainer>
+        {errors.image && (
+          <ErrorMessage>
+            <ErrorIcon className="fas fa-exclamation-circle" />Foto do produto é obrigatória!
+          </ErrorMessage>
+        )}
+        {errors.name && (
+          <ErrorMessage>
+            <ErrorIcon className="fas fa-exclamation-circle" />Nome do produto é obrigatório!
+          </ErrorMessage>
+        )}
+        {errors.price && (
+          <ErrorMessage>
+            <ErrorIcon className="fas fa-exclamation-circle" />Preço do produto é obrigatório!
+          </ErrorMessage>
+        )}
+        {errors.inventory && (
+          <ErrorMessage>
+            <ErrorIcon className="fas fa-exclamation-circle" />Quantidade de estoque é obrigatória!
+          </ErrorMessage>
+        )}
+        {errors.description && (
+          <ErrorMessage>
+            <ErrorIcon className="fas fa-exclamation-circle" />Descrição do produto é obrigatória!
+          </ErrorMessage>
+        )}
+      </ErrorContainer>
     </Container>
   );
 };

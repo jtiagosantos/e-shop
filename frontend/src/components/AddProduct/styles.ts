@@ -15,7 +15,6 @@ export const Form = styled.form`
                        "c d"
                        "e e";
   grid-gap: 10px;
-  max-width: 800px;
 `;
 
 export const Input = styled.input`
@@ -27,26 +26,47 @@ export const Input = styled.input`
   font-size: 16px;
   color: #141414;
 
-  &:nth-child(1) {
-    grid-area: a;
-    max-width: 100%;
-  }
-
   &:nth-child(2) {
     grid-area: b;
-    //margin: 15px 10px 15px 0;
   }
 
   &:nth-child(3) {
     grid-area: c;
-    //margin: 15px 0 15px 10px;
-  }
-
-  &:nth-child(4) {
-    grid-area: d;
-    //margin: 15px 0 15px 10px;
   }
 `;
+
+export const InputFile = styled.div`
+  grid-area: a;
+  background: #fff;
+  border-radius: 8px;
+  font-size: 16px;
+
+  display: flex;
+  align-items: center;
+  padding: 5px 0 5px 7px;
+
+  input {
+    border: none;
+    height: 40px;
+  }
+`;
+
+export const Label = styled.label`
+  color: rgb(118, 118, 118);
+  display: flex;
+  align-items: center;
+`;
+
+export const OptionList = styled.select`
+  grid-area: d;
+  background: #fff;
+  border-radius: 8px;
+  height: 50px;
+  border: 1px solid #ccc;
+  padding: 7px;
+  font-size: 16px;
+  color: #141414;
+`; 
 
 export const TextArea = styled.textarea`
   grid-area: e;
@@ -81,4 +101,20 @@ export const TextButton = styled.p`
   color: #fff;
   font-size: 20px;
   font-weight: 500;
+`;
+
+export const ErrorContainer = styled.div`
+  min-width: 674px;
+  max-width: 674px;
+  margin: 20px 0;
+`;
+
+export const ErrorMessage = styled.p`
+  color: #636362;
+  margin-bottom: 5px;
+`;
+
+export const ErrorIcon = styled.i`
+  margin-right: 10px;
+  color: rgba(219, 86, 78, 0.8);
 `;
