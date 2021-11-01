@@ -53,6 +53,22 @@ class FileController {
       res.status(500).json({ error: error.message });
     }
   }
+
+  async delelte(req, res) {
+    try {
+      const { id } = req.params;
+
+      const file = await File.findByIdAndDelete(id);
+
+      if(file) res.status(200).json({ error: false, message: 'deleted file' });
+      else res.status(404).json({ error: false, message: 'product not found' });
+
+      await syncRedisSet('files', '')
+
+    } catch(error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
 };
 
 module.exports = new FileController();

@@ -8,12 +8,13 @@ import ProductCard from '../../components/ProductCard';
 import { ProductContainer, Message } from './styles';
 
 import { useSearchContext } from '../../hooks/useSearchContext';
+import { useProductContext } from '../../hooks/useProductContext';
 
 export default function Home(): JSX.Element {
-  const [products, setProducts] = useState<TypeProduct[]>([]);
   const [wantedProducts, setWantedProducts] = useState<TypeProduct[]>([])
   
   const { search } = useSearchContext();
+  const { products, setProducts } = useProductContext();
 
   useEffect(() => {
     async function fetchProductsData() {

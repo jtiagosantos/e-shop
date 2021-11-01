@@ -2,7 +2,11 @@ import { useState, useEffect } from 'react';
 
 import { GetProductService } from '../../services/ProductServices';
 import { TypeProduct } from '../../services/ProductServices';
-import Navbar from '../Navbar';
+
+import Navbar from '../../components/Navbar';
+import DeleteProductModal from '../../components/DeleteProductModal';
+
+import { useModalContext } from '../../hooks/useModalContext';
 
 import { 
   Container,
@@ -19,7 +23,9 @@ import {
   TopProductContainer,
   BottomProductContainer,
   TitleDescription,
-  Description
+  Description,
+  IconContainer,
+  Icon
 } from './styles';
 
 type ProductProps = {
@@ -36,11 +42,16 @@ export default function Product({ match }: ProductProps): JSX.Element {
 
   const { params: { id } } = match;
 
+  const { openModal, setOpenModal } = useModalContext();
+
   useEffect(() => {
     async function fetchProductData() {
       const data = await GetProductService(id);
-      setProduct(data[0]);
-      setImage(require(`../../../../backend/public/uploads/${data[0].filename}`).default);
+
+      if(data.length) {
+        setProduct(data[0]);
+        setImage(require(`../../../../backend/public/uploads/${data[0].filename}`).default);
+      }
     };
 
     fetchProductData();
@@ -52,6 +63,7 @@ export default function Product({ match }: ProductProps): JSX.Element {
 
   return(
    <Container>
+      {openModal && <DeleteProductModal product_id={id} />}
       <Navbar />
       <ProductContainer>
         <TopProductContainer>
@@ -96,6 +108,11 @@ export default function Product({ match }: ProductProps): JSX.Element {
           <TitleDescription>Detalhes do produto</TitleDescription>
           <Description>{product?.product_id.description}</Description>
         </BottomProductContainer>
+
+        <IconContainer>
+          <Icon className='far fa-trash-alt' onClick={() => setOpenModal(true)} />
+          <Icon className='far fa-edit' />
+        </IconContainer>
       </ProductContainer>
    </Container>
   );

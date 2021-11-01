@@ -37,4 +37,13 @@ async function AddProductService(body: BodyProduct) {
   return data;
 };
 
-export { GetProductsService, GetProductService, AddProductService };
+async function DeleteProductService(product_id: string) {
+  await api.delete(`api/v1/delete_file/${product_id}`);
+};
+
+export { 
+  GetProductsService, 
+  GetProductService, 
+  AddProductService,
+  DeleteProductService
+};

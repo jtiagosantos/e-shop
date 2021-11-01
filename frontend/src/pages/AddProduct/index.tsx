@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 
-import Navbar from "../Navbar";
+import Navbar from "../../components/Navbar";
 import { AddProductService } from "../../services/ProductServices";
 import { AddFileService } from "../../services/FileServices";
 

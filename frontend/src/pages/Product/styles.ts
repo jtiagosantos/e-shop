@@ -115,3 +115,24 @@ export const Description = styled.p`
   font-size: 16px;
   word-break: break-all;
 `;
+
+export const IconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
+
+  padding: 10px 20px 0 20px;
+`;
+
+export const Icon = styled.i`
+  font-size: 25px;
+  cursor: pointer;
+  color: rgba(20, 20, 20, 0.5);
+  transition: 0.5s ease-out;
+
+  &:hover {
+    color: #141414;
+    transition: 0.5s ease-out;
+  }
+`;

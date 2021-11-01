@@ -1,8 +1,8 @@
 import { Route } from "react-router-dom";
 
 import Home from "../pages/Home";
-import Product from "../components/Product";
-import AddProduct from "../components/AddProduct";
+import Product from "../pages/Product";
+import AddProduct from "../pages/AddProduct";
 
 export default function Routes() {
   return(
