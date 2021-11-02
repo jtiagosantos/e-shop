@@ -4,6 +4,7 @@ export type TypeProduct = {
   _id: string,
   filename: string,
   product_id: {
+    _id: string,
     name: string,
     price: number,
     inventory: number,
@@ -37,13 +38,18 @@ async function AddProductService(body: BodyProduct) {
   return data;
 };
 
-async function DeleteProductService(product_id: string) {
-  await api.delete(`api/v1/delete_file/${product_id}`);
+async function DeleteProductService(product_id: string | undefined) {
+  await api.delete(`api/v1/delete_product/${product_id}`);
+};
+
+async function UpdateProductService(product_id: string, body: Object) {
+  await api.put(`api/v1/update_product/${product_id}`, body);
 };
 
 export { 
   GetProductsService, 
   GetProductService, 
   AddProductService,
-  DeleteProductService
+  DeleteProductService,
+  UpdateProductService
 };

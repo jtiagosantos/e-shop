@@ -54,7 +54,7 @@ class FileController {
     }
   }
 
-  async delelte(req, res) {
+  async delete(req, res) {
     try {
       const { id } = req.params;
 

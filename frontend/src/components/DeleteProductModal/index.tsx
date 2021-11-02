@@ -1,22 +1,26 @@
-import { useEffect } from "react";
-
 import { Container, Modal, TitleModal, IconContainer, Icon } from "./styles";
 
-import { DeleteProductService } from '../../services/ProductServices';
+import { DeleteFileService } from '../../services/FileServices';
 import { GetProductsService } from "../../services/ProductServices";
+import { DeleteProductService } from "../../services/ProductServices";
 
 import { useModalContext } from "../../hooks/useModalContext";
 import { useProductContext } from '../../hooks/useProductContext';
 
 type DeleteProductModalProps = {
-  product_id: string,
+  file_id: string,
+  product_id: string | undefined
 };
 
-export default function DeleteProductModal({ product_id }: DeleteProductModalProps): JSX.Element {
+export default function DeleteProductModal({ 
+  file_id, 
+  product_id 
+}: DeleteProductModalProps): JSX.Element {
   const { setOpenModal } = useModalContext();
   const { setProducts } = useProductContext();
 
   async function handleDeleteProduct() {
+    await DeleteFileService(file_id);
     await DeleteProductService(product_id);
     const data = await GetProductsService();
     setProducts(data);

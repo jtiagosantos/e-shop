@@ -5,4 +5,9 @@ async function AddFileService(data: Object, product_id: string) {
   return file
 };
 
-export { AddFileService };
+async function DeleteFileService(file_id: string) {
+  await api.delete(`api/v1/delete_file/${file_id}`);
+};
+
+
+export { AddFileService, DeleteFileService };

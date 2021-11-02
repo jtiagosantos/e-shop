@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { GetProductService } from '../../services/ProductServices';
 import { TypeProduct } from '../../services/ProductServices';
@@ -44,6 +45,8 @@ export default function Product({ match }: ProductProps): JSX.Element {
 
   const { openModal, setOpenModal } = useModalContext();
 
+  const history = useHistory();
+
   useEffect(() => {
     async function fetchProductData() {
       const data = await GetProductService(id);
@@ -61,9 +64,17 @@ export default function Product({ match }: ProductProps): JSX.Element {
     }
   }, []);
 
+  function navigateToProductUpdatePage() {
+    history.push(`/update_product/${id}/${product?.product_id._id}`);
+  };
+
   return(
    <Container>
-      {openModal && <DeleteProductModal product_id={id} />}
+      {openModal && <DeleteProductModal 
+                      file_id={id}
+                      product_id={product?.product_id._id}
+                    />
+      }
       <Navbar />
       <ProductContainer>
         <TopProductContainer>
@@ -111,7 +122,7 @@ export default function Product({ match }: ProductProps): JSX.Element {
 
         <IconContainer>
           <Icon className='far fa-trash-alt' onClick={() => setOpenModal(true)} />
-          <Icon className='far fa-edit' />
+          <Icon className='far fa-edit' onClick={navigateToProductUpdatePage} />
         </IconContainer>
       </ProductContainer>
    </Container>
