@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 
-import { SearchContextProvider } from '../src/contexts/searchContext';
-import { ModalContextProvider } from '../src/contexts/modalContext';
-import { ProductContextProvider } from '../src/contexts/productContext';
+import { SearchContextProvider } from './contexts/SearchContext';
+import { ModalContextProvider } from './contexts/ModalContext';
+import { ProductContextProvider } from './contexts/ProductContext';
 
 ReactDOM.render(
   <React.StrictMode>
