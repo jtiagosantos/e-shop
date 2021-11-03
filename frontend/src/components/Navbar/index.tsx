@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { 
   Container, 
@@ -13,6 +13,7 @@ import {
 } from "./styles";
 
 import { useSearchContext } from "../../hooks/useSearchContext";
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 type NavbarProps = {
   showOnlyTitle?: boolean,
@@ -20,10 +21,28 @@ type NavbarProps = {
 
 export default function Navbar({ showOnlyTitle = false }: NavbarProps): JSX.Element {
   const { search, setSearch } = useSearchContext();
+  const { setToken } = useAuthContext();
+
+  const token = localStorage.getItem('@eshop:token');
+
+  const history = useHistory();
+
+  function navigateToLoginPage() {
+    history.push('/login');
+  };
+
+  function navigateToHomePage() {
+    history.push('/');
+  };
+
+  function handleLogout() {
+    localStorage.removeItem('@eshop:token');
+    setToken('');
+  };
 
   return(
     <Container>
-      <TitleContainer>
+      <TitleContainer onClick={navigateToHomePage}>
         <Title color="rgba(45, 71, 120, 0.9);">e</Title>
         <Title color="#cbe5e0">Shop</Title>
       </TitleContainer>
@@ -38,8 +57,14 @@ export default function Navbar({ showOnlyTitle = false }: NavbarProps): JSX.Elem
             />
           </InputContainer>
           <ActionsContainer>
-            <Action>Entrar</Action>
-            <Action>Cadastrar</Action>
+            {!token ? (
+              <>
+                <Action onClick={navigateToLoginPage}>Entrar</Action>
+                <Action>Cadastrar</Action>
+              </>
+            ) : (
+              <Action onClick={handleLogout}>Sair</Action>
+            )}
             <Action>Sobre</Action>
           </ActionsContainer>
           <IconsContainer>

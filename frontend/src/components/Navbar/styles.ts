@@ -48,6 +48,12 @@ export const ActionsContainer = styled.div`
 
 export const Action = styled.p`
   font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(0.9);
+  }
 
   &:nth-child(2) {
     margin: 0 40px;
