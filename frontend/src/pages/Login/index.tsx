@@ -1,5 +1,6 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css'; 
 
 import { AuthenticateUserService } from '../../services/UserServices';
 
@@ -26,8 +27,6 @@ type User = {
 };
 
 export default function Login(): JSX.Element {
-  const [showError, setShowError] = useState<boolean>(false);
-
   const { setToken } = useAuthContext();
 
   const { register, handleSubmit, formState: { errors } } = useForm<User>();
@@ -36,14 +35,34 @@ export default function Login(): JSX.Element {
     try {
       const { token } = await AuthenticateUserService(data);
       setToken(token);
-      setShowError(false);
+      toast('Logado com sucesso!',
+        {
+          position: "top-right",
+          style: {
+            borderRadius: '8px',
+            background: '#7bcc39',
+            color: '#fff',
+          },
+        }
+      );
     } catch(_) {
-      setShowError(true);
+      toast('E-mail e/ou senha incorretos!',
+        {
+          position: "top-right",
+          style: {
+            borderRadius: '5px',
+            background: '#eb654d',
+            color: '#fff',
+          },
+        }
+      );
     }
   };
 
   return(
     <Container>
+      <ToastContainer />
+
       <Navbar showOnlyTitle={true} />
 
       <Title>Faça seu login!</Title>
@@ -63,14 +82,6 @@ export default function Login(): JSX.Element {
         </Button>
 
         <Message>É novo usuário? Faça seu cadastro!</Message>
-
-        {showError && (
-          <ErrorContainer>
-            <ErrorMessage>
-              <ErrorIcon className="fas fa-exclamation-circle" />E-mail e/ou senha incorretos!
-            </ErrorMessage>
-        </ErrorContainer>
-        )}
       </Form>
 
       <ErrorContainer>
