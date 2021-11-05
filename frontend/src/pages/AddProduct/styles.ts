@@ -15,6 +15,7 @@ export const Form = styled.form`
                        "c d"
                        "e e";
   grid-gap: 10px;
+  margin-bottom: 25px;
 `;
 
 export const Input = styled.input`
@@ -101,20 +102,4 @@ export const TextButton = styled.p`
   color: #fff;
   font-size: 20px;
   font-weight: 500;
-`;
-
-export const ErrorContainer = styled.div`
-  min-width: 674px;
-  max-width: 674px;
-  margin: 20px 0;
-`;
-
-export const ErrorMessage = styled.p`
-  color: #636362;
-  margin-bottom: 5px;
-`;
-
-export const ErrorIcon = styled.i`
-  margin-right: 10px;
-  color: rgba(219, 86, 78, 0.8);
 `;

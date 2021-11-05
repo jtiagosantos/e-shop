@@ -3,6 +3,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css'; 
 
 import Navbar from "../../components/Navbar";
+import Error from "../../components/Error";
 
 import { AddProductService } from "../../services/ProductServices";
 import { AddFileService } from "../../services/FileServices";
@@ -18,10 +19,7 @@ import {
   Button,
   TextButton,
   Form,
-  OptionList,
-  ErrorContainer,
-  ErrorMessage,
-  ErrorIcon
+  OptionList
 } from "./styles";
 
 type Product = {
@@ -36,7 +34,7 @@ type Product = {
 export default function AddProduct(): JSX.Element {
   const { token } = useAuthContext();
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm<Product>();
 
   async function onSubmitForm(data: Product) {
     try {
@@ -121,33 +119,12 @@ export default function AddProduct(): JSX.Element {
           <TextButton>Cadastrar Produto</TextButton>
         </Button>
       </Form>
-      <ErrorContainer>
-        {errors.image && (
-          <ErrorMessage>
-            <ErrorIcon className="fas fa-exclamation-circle" />Foto do produto é obrigatória!
-          </ErrorMessage>
-        )}
-        {errors.name && (
-          <ErrorMessage>
-            <ErrorIcon className="fas fa-exclamation-circle" />Nome do produto é obrigatório!
-          </ErrorMessage>
-        )}
-        {errors.price && (
-          <ErrorMessage>
-            <ErrorIcon className="fas fa-exclamation-circle" />Preço do produto é obrigatório!
-          </ErrorMessage>
-        )}
-        {errors.inventory && (
-          <ErrorMessage>
-            <ErrorIcon className="fas fa-exclamation-circle" />Quantidade de estoque é obrigatória!
-          </ErrorMessage>
-        )}
-        {errors.description && (
-          <ErrorMessage>
-            <ErrorIcon className="fas fa-exclamation-circle" />Descrição do produto é obrigatória!
-          </ErrorMessage>
-        )}
-      </ErrorContainer>
+      
+      {errors.image && <Error message='Foto do produto é obrigatória!' /> }
+      {errors.name && <Error message='Nome do produto é obrigatório!' /> }
+      {errors.price && <Error message='Preço do produto é obrigatório!' /> }
+      {errors.inventory && <Error message='Quantidade de estoque é obrigatória!' /> }
+      {errors.description && <Error message='Descrição do produto é obrigatória!' /> }
     </Container>
   );
 };

@@ -62,27 +62,11 @@ export const TextButton = styled.p`
 export const Message = styled.p`
   font-size: 15px;
   color: rgba(85, 145, 161, 0.7);
-  margin-top: 15px;
+  margin: 15px 0 20px 0;
   font-weight: 500;
   
   &:hover {
     cursor: pointer;
     filter: brightness(0.9);
   }
-`;
-
-export const ErrorContainer = styled.div`
-  min-width: 380px;
-  max-width: 380px;
-  margin: 20px 0;
-`;
-
-export const ErrorMessage = styled.p`
-  color: #636362;
-  margin-bottom: 5px;
-`;
-
-export const ErrorIcon = styled.i`
-  margin-right: 10px;
-  color: rgba(219, 86, 78, 0.8);
 `;

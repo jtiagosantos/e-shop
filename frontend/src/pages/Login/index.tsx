@@ -2,11 +2,12 @@ import { useForm } from 'react-hook-form';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css'; 
 
+import Navbar from '../../components/Navbar';
+import Error from '../../components/Error';
+
 import { AuthenticateUserService } from '../../services/UserServices';
 
 import { useAuthContext } from '../../hooks/useAuthContext';
-
-import Navbar from '../../components/Navbar';
 
 import { 
   Container, 
@@ -15,9 +16,6 @@ import {
   Input,
   Button,
   TextButton,
-  ErrorContainer,
-  ErrorMessage,
-  ErrorIcon,
   Message
 } from './styles';
 
@@ -85,18 +83,8 @@ export default function Login(): JSX.Element {
         <Message>É novo usuário? Faça seu cadastro!</Message>
       </Form>
 
-      <ErrorContainer>
-        {errors.email && (
-          <ErrorMessage>
-            <ErrorIcon className="fas fa-exclamation-circle" />E-mail é um campo obrigatório!
-          </ErrorMessage>
-        )}
-        {errors.password && (
-          <ErrorMessage>
-            <ErrorIcon className="fas fa-exclamation-circle" />Senha é um campo obrigatório!
-          </ErrorMessage>
-        )}
-      </ErrorContainer>
+      {errors.email && <Error message='E-mail é um campo obrigatório!' minWidth={380} />}
+      {errors.password && <Error message='Senha é um campo obrigatório!' minWidth={380} />}
     </Container>
   );
 };
