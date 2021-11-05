@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css'; 
 
 import { GetProductsService, TypeProduct } from '../../services/ProductServices';
 
@@ -14,7 +16,12 @@ export default function Home(): JSX.Element {
   const [wantedProducts, setWantedProducts] = useState<TypeProduct[]>([])
   
   const { search } = useSearchContext();
-  const { products, setProducts } = useProductContext();
+  const { 
+    products, 
+    setProducts, 
+    isProductDeleted, 
+    setIsProductDeleted 
+  } = useProductContext();
 
   useEffect(() => {
     async function fetchProductsData() {
@@ -35,8 +42,25 @@ export default function Home(): JSX.Element {
     )));
   }, [search]);
 
+  useEffect(() => {
+    if(isProductDeleted) {
+      toast('Produto deletado com sucesso!',
+        {
+          position: "top-right",
+          style: {
+            borderRadius: '8px',
+            background: '#7bcc39',
+            color: '#fff',
+          },
+        }
+      );
+      setIsProductDeleted(false);
+    }
+  }, [isProductDeleted]);
+
   return(
     <>
+      <ToastContainer />
       <Navbar />
 
       {products.length > 0 ? (

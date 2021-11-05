@@ -1,10 +1,16 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css'; 
 
 import Navbar from "../../components/Navbar";
 
 import { UpdateProductService } from "../../services/ProductServices";
 import { GetProductService } from "../../services/ProductServices";
+
+import { useAuthContext } from "../../hooks/useAuthContext";
+import { useProductContext } from "../../hooks/useProductContext";
 
 import { 
   Container,
@@ -45,6 +51,11 @@ export default function UpdateProduct({ match }: ProductProps): JSX.Element {
 
   const { params: { id } } = match;
   const { params: { product_id } } = match;
+
+  const { token } = useAuthContext();
+  const { isProductUpdated, setIsProductUpdated } = useProductContext();
+
+  const history = useHistory();
   
   useEffect(() => {
     async function fetchProductData() {
@@ -62,15 +73,35 @@ export default function UpdateProduct({ match }: ProductProps): JSX.Element {
       fetchProductData();
     };
   }, []);
+
+  useEffect(() => {
+    if(isProductUpdated) history.goBack();
+  }, [isProductUpdated]);
   
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   async function onSubmitForm(data: Product) {
-    await UpdateProductService(product_id, data);
+    try {
+      await UpdateProductService(product_id, data, String(token));
+      setIsProductUpdated(true);
+    } catch(_) {
+      toast('Faça login para atualizar um produto!',
+        {
+          position: "top-right",
+          style: {
+            borderRadius: '5px',
+            background: '#eb654d',
+            color: '#fff',
+          },
+        }
+      );
+    }
   };
 
   return(
     <Container>
+      <ToastContainer />
+
       <Navbar showOnlyTitle={true} />
       <Form onSubmit={handleSubmit(onSubmitForm)}>
         <Input 

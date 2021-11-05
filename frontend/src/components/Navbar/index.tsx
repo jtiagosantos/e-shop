@@ -21,9 +21,10 @@ type NavbarProps = {
 
 export default function Navbar({ showOnlyTitle = false }: NavbarProps): JSX.Element {
   const { search, setSearch } = useSearchContext();
-  const { setToken } = useAuthContext();
+  const { setToken, setUsername } = useAuthContext();
 
   const token = localStorage.getItem('@eshop:token');
+  const username = localStorage.getItem('@eshop:username');
 
   const history = useHistory();
 
@@ -36,8 +37,9 @@ export default function Navbar({ showOnlyTitle = false }: NavbarProps): JSX.Elem
   };
 
   function handleLogout() {
-    localStorage.removeItem('@eshop:token');
+    localStorage.clear();
     setToken('');
+    setUsername('');
   };
 
   return(
@@ -63,7 +65,7 @@ export default function Navbar({ showOnlyTitle = false }: NavbarProps): JSX.Elem
                 <Action>Cadastrar</Action>
               </>
             ) : (
-              <Action onClick={handleLogout}>Sair</Action>
+              <Action onClick={handleLogout}>Sair({username})</Action>
             )}
             <Action>Sobre</Action>
           </ActionsContainer>

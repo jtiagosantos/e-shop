@@ -27,14 +27,15 @@ type User = {
 };
 
 export default function Login(): JSX.Element {
-  const { setToken } = useAuthContext();
+  const { setToken, setUsername } = useAuthContext();
 
   const { register, handleSubmit, formState: { errors } } = useForm<User>();
 
   async function onSubmitForm(data: User) {
     try {
-      const { token } = await AuthenticateUserService(data);
+      const { token, username } = await AuthenticateUserService(data);
       setToken(token);
+      setUsername(username);
       toast('Logado com sucesso!',
         {
           position: "top-right",

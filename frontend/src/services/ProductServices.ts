@@ -33,17 +33,29 @@ async function GetProductService(id: string) {
   return data;
 };
 
-async function AddProductService(body: BodyProduct) {
-  const { data } = await api.post<ResponseAddProduct>(`api/v1/create_product`, body);
+async function AddProductService(body: BodyProduct, token: string) {
+  const { data } = await api.post<ResponseAddProduct>(`api/v1/create_product`, body, {
+    headers: {
+      'x-access-token': token
+    }
+  });
   return data;
 };
 
-async function DeleteProductService(product_id: string | undefined) {
-  await api.delete(`api/v1/delete_product/${product_id}`);
+async function DeleteProductService(product_id: string | undefined, token: string) {
+  await api.delete(`api/v1/delete_product/${product_id}`, {
+    headers: {
+      'x-access-token': token
+    }
+  });
 };
 
-async function UpdateProductService(product_id: string, body: Object) {
-  await api.put(`api/v1/update_product/${product_id}`, body);
+async function UpdateProductService(product_id: string, body: Object, token: string) {
+  await api.put(`api/v1/update_product/${product_id}`, body, {
+    headers: {
+      'x-access-token': token
+    }
+  });
 };
 
 export { 

@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css'; 
 
 import { GetProductService } from '../../services/ProductServices';
 import { TypeProduct } from '../../services/ProductServices';
@@ -8,6 +10,7 @@ import Navbar from '../../components/Navbar';
 import DeleteProductModal from '../../components/DeleteProductModal';
 
 import { useModalContext } from '../../hooks/useModalContext';
+import { useProductContext } from '../../hooks/useProductContext';
 
 import { 
   Container,
@@ -44,6 +47,7 @@ export default function Product({ match }: ProductProps): JSX.Element {
   const { params: { id } } = match;
 
   const { openModal, setOpenModal } = useModalContext();
+  const { isProductDeleted,isProductUpdated, setIsProductUpdated } = useProductContext();
 
   const history = useHistory();
 
@@ -64,17 +68,38 @@ export default function Product({ match }: ProductProps): JSX.Element {
     }
   }, []);
 
+  useEffect(() => {
+    if(isProductUpdated) {
+      toast('Produto atualizado com sucesso!',
+        {
+          position: "top-right",
+          style: {
+            borderRadius: '8px',
+            background: '#7bcc39',
+            color: '#fff',
+          },
+        }
+      );
+      setIsProductUpdated(false);
+    }
+  }, [isProductUpdated]);
+
   function navigateToProductUpdatePage() {
     history.push(`/update_product/${id}/${product?.product_id._id}`);
   };
 
   return(
    <Container>
+     <ToastContainer />
+     
       {openModal && <DeleteProductModal 
                       file_id={id}
                       product_id={product?.product_id._id}
                     />
       }
+
+      {isProductDeleted && <Redirect to='/' />}
+
       <Navbar />
       <ProductContainer>
         <TopProductContainer>

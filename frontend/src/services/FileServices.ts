@@ -5,8 +5,12 @@ async function AddFileService(data: Object, product_id: string) {
   return file
 };
 
-async function DeleteFileService(file_id: string) {
-  await api.delete(`api/v1/delete_file/${file_id}`);
+async function DeleteFileService(file_id: string, token: string) {
+  await api.delete(`api/v1/delete_file/${file_id}`, {
+    headers: {
+      'x-access-token': token
+    }
+  });
 };
 
 

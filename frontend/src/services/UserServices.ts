@@ -7,6 +7,7 @@ type AuthenticateUser = {
 
 type ResponseAuthenticate = {
   token: string,
+  username: string,
 };
 
 async function AuthenticateUserService(body: AuthenticateUser) {

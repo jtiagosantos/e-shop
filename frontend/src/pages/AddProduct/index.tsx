@@ -1,8 +1,13 @@
 import { useForm } from "react-hook-form";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css'; 
 
 import Navbar from "../../components/Navbar";
+
 import { AddProductService } from "../../services/ProductServices";
 import { AddFileService } from "../../services/FileServices";
+
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 import { 
   Container,
@@ -29,25 +34,54 @@ type Product = {
 };
 
 export default function AddProduct(): JSX.Element {
+  const { token } = useAuthContext();
+
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   async function onSubmitForm(data: Product) {
-    const product = await AddProductService({
-      name: data.name,
-      price: data.price,
-      inventory: Number(data.inventory),
-      description: data.description
-    });
+    try {
+      const product = await AddProductService({
+        name: data.name,
+        price: data.price,
+        inventory: Number(data.inventory),
+        description: data.description
+      }, String(token));
+  
+      const formData = new FormData();
+      formData.append('image', data.image[0]);
+  
+      await AddFileService(formData, product._id);
 
-    const formData = new FormData();
-    formData.append('image', data.image[0]);
-
-    await AddFileService(formData, product._id);
+      toast('Produto cadastrado com sucesso!',
+        {
+          position: "top-right",
+          style: {
+            borderRadius: '8px',
+            background: '#7bcc39',
+            color: '#fff',
+          },
+        }
+      );
+    } catch(error) {
+        toast('Faça login para cadastrar um produto!',
+          {
+            position: "top-right",
+            style: {
+              borderRadius: '5px',
+              background: '#eb654d',
+              color: '#fff',
+            },
+          }
+        );
+    }
   };
 
   return(
     <Container>
+      <ToastContainer />
+
       <Navbar showOnlyTitle={true} />
+
       <Form onSubmit={handleSubmit(onSubmitForm)}>
         <InputFile>
           <Label htmlFor='file'>Selecione uma foto do produto</Label>
@@ -84,7 +118,7 @@ export default function AddProduct(): JSX.Element {
           placeholder='Descrição do produto' 
         />
         <Button type="submit">
-          <TextButton>Adicionar Produto</TextButton>
+          <TextButton>Cadastrar Produto</TextButton>
         </Button>
       </Form>
       <ErrorContainer>
