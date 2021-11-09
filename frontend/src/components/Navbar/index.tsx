@@ -32,6 +32,10 @@ export default function Navbar({ showOnlyTitle = false }: NavbarProps): JSX.Elem
     history.push('/login');
   };
 
+  function navigateToRegisterPage() {
+    history.push('/register');
+  };
+
   function navigateToHomePage() {
     history.push('/');
   };
@@ -62,7 +66,7 @@ export default function Navbar({ showOnlyTitle = false }: NavbarProps): JSX.Elem
             {!token ? (
               <>
                 <Action onClick={navigateToLoginPage}>Entrar</Action>
-                <Action>Cadastrar</Action>
+                <Action onClick={navigateToRegisterPage}>Cadastrar</Action>
               </>
             ) : (
               <Action onClick={handleLogout}>Sair({username})</Action>

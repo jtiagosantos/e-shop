@@ -17,7 +17,7 @@ class UserController {
         if(isValidEmail) {
           body.password = bcrypt.hashSync(body.password, 10);
           const user = await new User(body).save();
-          res.status(200).json({ error: false, user });
+          res.status(200).json(user);
         }else {
           res.status(400).json({ message: 'E-mail inválido!' });
         }
@@ -25,7 +25,7 @@ class UserController {
         res.status(500).json({ error: error.message });
       }
     }else {
-      res.status(200).json({ messsage: 'E-mail informado já em uso!' });
+      res.status(400).json({ messsage: 'E-mail informado já em uso!' });
     }
   };
 

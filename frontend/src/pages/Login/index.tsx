@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css'; 
 
@@ -26,6 +27,8 @@ type User = {
 
 export default function Login(): JSX.Element {
   const { setToken, setUsername } = useAuthContext();
+
+  const history = useHistory();
 
   const { register, handleSubmit, formState: { errors } } = useForm<User>();
 
@@ -58,6 +61,10 @@ export default function Login(): JSX.Element {
     }
   };
 
+  function navigateToRegisterPage() {
+    history.push('/register');
+  };
+
   return(
     <Container>
       <ToastContainer />
@@ -80,7 +87,9 @@ export default function Login(): JSX.Element {
           <TextButton>Entrar</TextButton>
         </Button>
 
-        <Message>É novo usuário? Faça seu cadastro!</Message>
+        <Message onClick={navigateToRegisterPage}>
+          É novo usuário? Faça seu cadastro!
+        </Message>
       </Form>
 
       {errors.email && <Error message='E-mail é um campo obrigatório!' minWidth={380} />}
