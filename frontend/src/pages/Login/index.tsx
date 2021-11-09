@@ -100,7 +100,7 @@ export default function Login(): JSX.Element {
         />
         {!isLoading ? (
           token ? (
-            <Button typeCursor={token ? 'not-allowed' : ''} disabled>Entrar</Button>
+            <Button typeCursor='not-allowed' disabled>Entrar</Button>
           ) : (
             <Button>Entrar</Button>
           )
