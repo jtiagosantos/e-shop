@@ -35,26 +35,27 @@ export const Input = styled.input`
   margin-bottom: 15px;
 `;
 
-export const Button = styled.button`
+type ButtonProps = {
+  typeCursor?: string,
+};
+
+export const Button = styled.button<ButtonProps>`
   padding: 10px;
   height: 50px;
   width: 100%;
   border-radius: 5px;
   border: none;
   background: #377A8B;
-  cursor: pointer;
+  color: #fff !important;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: ${props => props.typeCursor || 'cursor'} !important;
 
   margin-top: 40px;
 
   &:hover {
     filter: brightness(0.9);
   }
-`;
-
-export const TextButton = styled.p`
-  color: #fff;
-  font-size: 20px;
-  font-weight: 500;
 `;
 
 export const Message = styled.p`

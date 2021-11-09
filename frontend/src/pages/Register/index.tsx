@@ -15,7 +15,6 @@ import {
   Form, 
   Input,
   Button,
-  TextButton,
   Message
 } from './styles';
 
@@ -29,43 +28,55 @@ type User = {
 export default function Register(): JSX.Element {
   const [isRedirectToLoginPage, setIsRedirectToLoginPage] = useState(false);
   const [isShowErrorPasswordsDifferent, setIsShowErrorPasswordsDifferent] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isUserRegistered, setIsUserRegistered] = useState(false);
 
   const history = useHistory();
 
   const { register, handleSubmit, formState: { errors } } = useForm<User>();
 
   async function onSubmitForm(data: User) {
+    setIsLoading(true);
     try {
       const { name, email, password, confirm_password } = data;
 
       if(password !== confirm_password) {
         setIsShowErrorPasswordsDifferent(true);
+        setIsLoading(false);
       }else {
         setIsShowErrorPasswordsDifferent(false);
         await RegisterUserService({ name, email, password });
-        toast('Cadastrado com sucesso!\nRedirecionando...',
-        {
-          position: "top-right",
-          style: {
-            borderRadius: '8px',
-            background: '#7bcc39',
-            color: '#fff',
-          },
-        }
-      );
-      setTimeout(() => setIsRedirectToLoginPage(true), 5000);
+        setTimeout(() => {
+          setIsLoading(false);
+          setIsUserRegistered(true);
+          toast('Cadastrado com sucesso!\nRedirecionando...',
+            {
+              position: "top-right",
+              style: {
+                borderRadius: '8px',
+                background: '#7bcc39',
+                color: '#fff',
+              },
+            }
+          );
+        }, 3000);
+        
+      setTimeout(() => setIsRedirectToLoginPage(true), 6000);
       }
     } catch(_) {
-      toast('E-mail informado já em uso!',
-        {
-          position: "top-right",
-          style: {
-            borderRadius: '5px',
-            background: '#eb654d',
-            color: '#fff',
-          },
-        }
-      );
+      setTimeout(() => {
+        toast('E-mail informado já em uso!',
+          {
+            position: "top-right",
+            style: {
+              borderRadius: '5px',
+              background: '#eb654d',
+              color: '#fff',
+            },
+          }
+        );
+        setIsLoading(false);
+      }, 3000);
     }
   };
 
@@ -110,13 +121,28 @@ export default function Register(): JSX.Element {
           {...register('confirm_password', { required: true })}
           placeholder='Confirmação da senha'
         />
-        <Button>
-          <TextButton>Cadastrar</TextButton>
-        </Button>
+        {!isLoading ? (
+          isUserRegistered ? (
+            <Button typeCursor='not-allowed' disabled>Cadastrar</Button>
+          ) : (
+            <Button>Cadastrar</Button>
+          )
+        ) : (
+          <Button className="w-100 btn btn-lg btn-register" typeCursor='not-allowed' disabled>
+            <span 
+              className="spinner-border spinner-border-sm mr-2 m-1 h6" 
+              role="status" 
+              aria-hidden="true"
+            ></span>
+            Cadastrando...
+          </Button>
+        )}
 
-        <Message onClick={navigateToLoginPage}>
-          Já é usuário? Faça seu login!
-        </Message>
+        {!isUserRegistered && (
+          <Message onClick={navigateToLoginPage}>
+            Já é usuário? Faça seu login!
+          </Message>
+        )}
       </Form>
 
       {errors.name && <Error message='Nome de usuário é obrigatório!' minWidth={380} />}
