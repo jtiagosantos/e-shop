@@ -1,5 +1,6 @@
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css'; 
 
@@ -16,7 +17,6 @@ import {
   Form, 
   Input,
   Button,
-  TextButton,
   Message
 } from './styles';
 
@@ -26,18 +26,24 @@ type User = {
 };
 
 export default function Login(): JSX.Element {
-  const { setToken, setUsername } = useAuthContext();
+  const [isRedirectToHomePage, setIsRedirectToHomePage] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { token, setToken, setUsername } = useAuthContext();
 
   const history = useHistory();
 
   const { register, handleSubmit, formState: { errors } } = useForm<User>();
 
   async function onSubmitForm(data: User) {
+    setIsLoading(true);
     try {
       const { token, username } = await AuthenticateUserService(data);
       setToken(token);
       setUsername(username);
-      toast('Logado com sucesso!',
+      setTimeout(() => {
+        setIsLoading(false);
+        toast('Logado com sucesso!\nRedirecionando...',
         {
           position: "top-right",
           style: {
@@ -47,8 +53,11 @@ export default function Login(): JSX.Element {
           },
         }
       );
+      }, 3000);
+      setTimeout(() => setIsRedirectToHomePage(true), 6000);
     } catch(_) {
-      toast('E-mail e/ou senha incorretos!',
+      setTimeout(() => {
+        toast('E-mail e/ou senha incorretos!',
         {
           position: "top-right",
           style: {
@@ -58,8 +67,12 @@ export default function Login(): JSX.Element {
           },
         }
       );
+      setIsLoading(false);
+      }, 3000);
     }
   };
+
+  useEffect(() => {}, [token]);
 
   function navigateToRegisterPage() {
     history.push('/register');
@@ -68,6 +81,8 @@ export default function Login(): JSX.Element {
   return(
     <Container>
       <ToastContainer />
+
+      {isRedirectToHomePage && <Redirect to='/' />}
 
       <Navbar showOnlyTitle={true} />
 
@@ -83,9 +98,22 @@ export default function Login(): JSX.Element {
           {...register('password', { required: true })}
           placeholder='Senha'
         />
-        <Button>
-          <TextButton>Entrar</TextButton>
-        </Button>
+        {!isLoading ? (
+          token ? (
+            <Button typeCursor={token ? 'not-allowed' : ''} disabled>Entrar</Button>
+          ) : (
+            <Button>Entrar</Button>
+          )
+        ) : (
+          <Button className="w-100 btn btn-lg btn-register" typeCursor='not-allowed' disabled>
+            <span 
+              className="spinner-border spinner-border-sm mr-2 m-1 h6" 
+              role="status" 
+              aria-hidden="true"
+            ></span>
+            Entrando...
+          </Button>
+        )}
 
         <Message onClick={navigateToRegisterPage}>
           É novo usuário? Faça seu cadastro!

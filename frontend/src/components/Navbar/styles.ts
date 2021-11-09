@@ -46,7 +46,7 @@ export const ActionsContainer = styled.div`
   color: #fff;
 `;
 
-export const Action = styled.p`
+export const Action = styled.div`
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
