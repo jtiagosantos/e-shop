@@ -5,12 +5,14 @@ import 'react-toastify/dist/ReactToastify.min.css';
 
 import { GetProductService } from '../../services/ProductServices';
 import { TypeProduct } from '../../services/ProductServices';
+import { AddProductToCartService } from '../../services/CartService';
 
 import Navbar from '../../components/Navbar';
 import DeleteProductModal from '../../components/DeleteProductModal';
 
 import { useModalContext } from '../../hooks/useModalContext';
 import { useProductContext } from '../../hooks/useProductContext';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 import { 
   Container,
@@ -48,6 +50,7 @@ export default function Product({ match }: ProductProps): JSX.Element {
 
   const { openModal, setOpenModal } = useModalContext();
   const { isProductDeleted,isProductUpdated, setIsProductUpdated } = useProductContext();
+  const { token } = useAuthContext();
 
   const history = useHistory();
 
@@ -87,6 +90,42 @@ export default function Product({ match }: ProductProps): JSX.Element {
   function navigateToProductUpdatePage() {
     history.push(`/update_product/${id}/${product?.product_id._id}`);
   };
+
+  async function addProductToCart() {
+    if(token) {
+      try {
+        await AddProductToCartService(product?._id, {
+          name: product?.product_id.name,
+          price: product?.product_id.price,
+          quantity: 1
+        }, String(token))
+  
+        toast('Produto adicionado com sucesso!',
+          {
+            position: "top-right",
+            style: {
+              borderRadius: '8px',
+              background: '#7bcc39',
+              color: '#fff',
+            },
+          }
+        );
+      } catch(error:any) {
+        console.log(error);
+      }
+    }else {
+      toast('Faça login para adicionar ao carrinho!',
+        {
+          position: "top-right",
+          style: {
+            borderRadius: '5px',
+            background: '#eb654d',
+            color: '#fff',
+          },
+        }
+      );
+    }
+  }
 
   return(
    <Container>
@@ -135,7 +174,9 @@ export default function Product({ match }: ProductProps): JSX.Element {
             <Button 
               typeCursor={product?.product_id.inventory ? 'pointer' : 'not-allowed'}
             >
-              <TitleButton>Adicionar ao carrinho</TitleButton>
+              <TitleButton onClick={addProductToCart}>
+                Adicionar ao carrinho
+              </TitleButton>
             </Button>
           </InfoContainer>
         </TopProductContainer>

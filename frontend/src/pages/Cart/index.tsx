@@ -38,7 +38,7 @@ export default function Cart(): JSX.Element {
             <div>
               <NameItem>Controle PS5</NameItem>
               <Actions>
-                <InputItem type='number' />
+                <InputItem type='number' value={1} />
                 <ButtonItem>Atualizar</ButtonItem>
                 <VerticalLine />
                 <TextDelete>Excluir</TextDelete>
@@ -55,7 +55,7 @@ export default function Cart(): JSX.Element {
             <div>
               <NameItem>Controle PS5</NameItem>
               <Actions>
-                <InputItem type='number' />
+                <InputItem type='number' value={1} />
                 <ButtonItem>Atualizar</ButtonItem>
                 <VerticalLine />
                 <TextDelete>Excluir</TextDelete>
