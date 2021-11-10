@@ -77,7 +77,9 @@ export default function Navbar({ showOnlyTitle = false }: NavbarProps): JSX.Elem
             <Link to='/add_product'>
               <Icon className="fas fa-plus-circle"></Icon>
             </Link>
-            <Icon className="fas fa-shopping-cart"></Icon>
+            <Link to='/cart'>
+              <Icon className="fas fa-shopping-cart"></Icon>
+            </Link>
           </IconsContainer>
         </>
       )}

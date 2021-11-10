@@ -6,6 +6,7 @@ import AddProduct from "../pages/AddProduct";
 import UpdateProduct from "../pages/UpdateProduct";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import Cart from "../pages/Cart";
 
 export default function Routes() {
   return(
@@ -16,6 +17,7 @@ export default function Routes() {
       <Route exact path='/update_product/:id/:product_id' component={UpdateProduct} />
       <Route exact path='/login' component={Login} />
       <Route exact path='/register' component={Register} />
+      <Route exact path='/cart' component={Cart} />
     </>
   );
 };
