@@ -35,9 +35,9 @@ export function AuthContextProvider({ children }: AuthContextProviderProps): JSX
     if(!userStorage) {
       localStorage.setItem('@eshop:username', String(username));
       const userStorage = localStorage.getItem('@eshop:username');
-      setToken(userStorage);
+      setUsername(userStorage);
     }else {
-      setToken(userStorage);
+      setUsername(userStorage);
     }
   }, [username]);
   

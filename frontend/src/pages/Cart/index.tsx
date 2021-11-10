@@ -1,6 +1,11 @@
-import Navbar from '../../components/Navbar';
+import { useState, useEffect } from 'react';
 
-import Image from '../../controle-ps5.jpg';
+import { GetProductsFromCart } from '../../services/CartService';
+import { ProductsResponse } from '../../services/CartService';
+
+import { useAuthContext } from '../../hooks/useAuthContext';
+
+import Navbar from '../../components/Navbar';
 
 import { 
   Container, 
@@ -21,6 +26,20 @@ import {
 } from './styles';
 
 export default function Cart(): JSX.Element {
+  const [products, setProducts] = useState<ProductsResponse[]>([]);
+
+  const { token } = useAuthContext();
+
+  useEffect(() => {
+    async function fetchProductsCart() {
+      if(String(token)) {
+        const data = await GetProductsFromCart(String(token));
+        setProducts(data);
+      }
+    }
+    fetchProductsCart();
+  }, [token]);
+
   return(
     <Container>
       <Navbar showOnlyTitle={true} />
@@ -32,39 +51,31 @@ export default function Cart(): JSX.Element {
       <HorizontalLine marginTop={-4} minWidth={70} borderWidth={2} />
 
       <CartContents>
-        <CartItem>
-          <ItemContent>
-            <ImageItem src={Image} alt='image' />
-            <div>
-              <NameItem>Controle PS5</NameItem>
-              <Actions>
-                <InputItem type='number' value={1} />
-                <ButtonItem>Atualizar</ButtonItem>
-                <VerticalLine />
-                <TextDelete>Excluir</TextDelete>
-              </Actions>
-            </div>
-          </ItemContent>
-          <PriceItem>R$ 450,00</PriceItem>
-        </CartItem>
-        <HorizontalLine minWidth={100} borderWidth={1} />
-
-        <CartItem>
-          <ItemContent>
-            <ImageItem src={Image} alt='image' />
-            <div>
-              <NameItem>Controle PS5</NameItem>
-              <Actions>
-                <InputItem type='number' value={1} />
-                <ButtonItem>Atualizar</ButtonItem>
-                <VerticalLine />
-                <TextDelete>Excluir</TextDelete>
-              </Actions>
-            </div>
-          </ItemContent>
-          <PriceItem>R$ 450,00</PriceItem>
-        </CartItem>
-        <HorizontalLine minWidth={100} borderWidth={1} />
+        {products.length > 0 && (
+          products.map(product => (
+            <>
+              <CartItem>
+              <ItemContent>
+                <ImageItem 
+                  src={require(`../../../../backend/public/uploads/${product.file_id.filename}`).default} 
+                  alt={product.file_id.filename}
+                />
+                <div>
+                  <NameItem>{product.name}</NameItem>
+                  <Actions>
+                    <InputItem type='number' value={product.quantity} />
+                    <ButtonItem>Atualizar</ButtonItem>
+                    <VerticalLine />
+                    <TextDelete>Excluir</TextDelete>
+                  </Actions>
+                </div>
+              </ItemContent>
+              <PriceItem>R$ {product.price}</PriceItem>
+            </CartItem>
+            <HorizontalLine minWidth={100} borderWidth={1} />
+            </>
+          ))
+        )}
       </CartContents>
     </Container>
   );
