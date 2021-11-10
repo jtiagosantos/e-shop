@@ -5,8 +5,9 @@ const CartSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: 'User'
   },
-  product_id: {
-    type: mongoose.Types.ObjectId
+  file_id: {
+    type: mongoose.Types.ObjectId,
+    ref: 'File'
   },
   name: {
     type: String,
