@@ -36,7 +36,7 @@ class CartController {
 
     try {
       const productUpdated = await Cart.findByIdAndUpdate(id, body, { new: true });
-      res.status(200).json({ message: 'Updated product in cart!', product: productUpdated });
+      res.status(200).json(productUpdated);
     } catch(error) {
       res.status(500).json({ error: error.message });
     }

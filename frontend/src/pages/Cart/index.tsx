@@ -1,6 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css'; 
 
-import { GetProductsFromCart } from '../../services/CartService';
+import { GetProductsFromCartService } from '../../services/CartService';
+import { UpdateProductFromCartService } from '../../services/CartService';
 import { ProductsResponse } from '../../services/CartService';
 
 import { useAuthContext } from '../../hooks/useAuthContext';
@@ -25,15 +29,66 @@ import {
   PriceItem
 } from './styles';
 
+type FormElements = HTMLFormControlsCollection & {
+  inputQuantity: HTMLInputElement,
+  inputId: HTMLInputElement,
+};
+
+type InputFormElements = HTMLFormElement & {
+  readonly elements: FormElements,
+};
+
+type Product = {
+  quantity: number,
+  id: string,
+};
+
 export default function Cart(): JSX.Element {
   const [products, setProducts] = useState<ProductsResponse[]>([]);
 
   const { token } = useAuthContext();
 
+  const { register } = useForm<Product>();
+
+  async function submitForm(event: FormEvent<InputFormElements>) {
+    event.preventDefault();
+    const quantity = Number(event.currentTarget.elements.inputQuantity.value);
+    const id = event.currentTarget.elements.inputId.value;
+
+    if(quantity < 1) {
+      toast('Quantidade deve ser um valor maior que zero!',
+        {
+          position: "top-right",
+          style: {
+            borderRadius: '8px',
+            background: '#eb654d',
+            color: '#fff',
+          },
+        }
+      );
+      return;
+    }
+    
+    const data = { quantity };
+
+    await UpdateProductFromCartService(String(token), id, data);
+
+    toast('Carrinho atualizado!',
+      {
+        position: "top-right",
+        style: {
+          borderRadius: '8px',
+          background: '#7bcc39',
+          color: '#fff',
+        },
+      }
+    );
+  }
+
   useEffect(() => {
     async function fetchProductsCart() {
       if(String(token)) {
-        const data = await GetProductsFromCart(String(token));
+        const data = await GetProductsFromCartService(String(token));
         setProducts(data);
       }
     }
@@ -42,6 +97,8 @@ export default function Cart(): JSX.Element {
 
   return(
     <Container>
+      <ToastContainer />
+
       <Navbar showOnlyTitle={true} />
 
       <TopCart>
@@ -63,8 +120,20 @@ export default function Cart(): JSX.Element {
                 <div>
                   <NameItem>{product.name}</NameItem>
                   <Actions>
-                    <InputItem type='number' value={product.quantity} />
-                    <ButtonItem>Atualizar</ButtonItem>
+                    <form onSubmit={submitForm}>
+                      <InputItem 
+                        type='number'
+                        id='inputQuantity'
+                        {...register('quantity', { required: true, value: product.quantity })}
+                      />
+                      <InputItem 
+                        hidden
+                        type='text'
+                        id='inputId'
+                        {...register('id', { value: product._id })}
+                      />
+                      <ButtonItem type='submit'>Atualizar</ButtonItem>
+                    </form>
                     <VerticalLine />
                     <TextDelete>Excluir</TextDelete>
                   </Actions>

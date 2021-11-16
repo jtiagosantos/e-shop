@@ -7,6 +7,7 @@ type BodyProductToCart = {
 };
 
 type ProductsResponse = {
+  _id: string,
   file_id: {
     filename: string,
   },
@@ -27,7 +28,7 @@ async function AddProductToCartService(
   });
 };
 
-async function GetProductsFromCart(token: string) {
+async function GetProductsFromCartService(token: string) {
   const { data } = await api.get<ProductsResponse[]>('/api/v1/cart/read_products', {
     headers: {
       'x-access-token': token
@@ -36,5 +37,21 @@ async function GetProductsFromCart(token: string) {
   return data;
 };
 
-export { AddProductToCartService, GetProductsFromCart };
+type BodyUpdate = {
+  quantity: number,
+};
+
+async function UpdateProductFromCartService(token: string, id: string, body: BodyUpdate) {
+  await api.put(`/api/v1/cart/update_product/${id}`, body, {
+    headers: {
+      'x-access-token': token
+    }
+  })
+};
+
+export { 
+  AddProductToCartService, 
+  GetProductsFromCartService,
+  UpdateProductFromCartService
+};
 export type { ProductsResponse };

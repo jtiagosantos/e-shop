@@ -69,9 +69,10 @@ export const ItemContent = styled.div`
 `;
 
 export const ImageItem = styled.img`
-  max-width: 135px;
+  max-width: 125px;
   max-height: 125px;
   border-radius: 5px;
+  background: #fff;
 `;
 
 export const NameItem = styled.p`
