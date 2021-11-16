@@ -158,3 +158,10 @@ export const TotalPriceText = styled.p`
   font-size: 20px;
   padding-right: 5px;
 `;
+
+export const EmptyCartText = styled.p`
+  color: rgba(20, 20, 20, 0.9);
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 200px;
+`;

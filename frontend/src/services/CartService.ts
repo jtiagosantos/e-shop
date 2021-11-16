@@ -58,10 +58,19 @@ async function GetTotalPriceCartService(token: string): Promise<number> {
   return Number(data);
 }
 
+async function DeleteProductFromCartService(token: string, id: string) {
+  await api.delete(`api/v1/cart/delete_product/${id}`, {
+    headers: {
+      'x-access-token': token
+    }
+  });
+}
+
 export { 
   AddProductToCartService, 
   GetProductsFromCartService,
   UpdateProductFromCartService,
-  GetTotalPriceCartService
+  GetTotalPriceCartService,
+  DeleteProductFromCartService
 };
 export type { ProductsResponse };

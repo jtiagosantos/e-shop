@@ -5,7 +5,8 @@ import 'react-toastify/dist/ReactToastify.min.css';
 
 import { 
   GetProductsFromCartService, 
-  GetTotalPriceCartService 
+  GetTotalPriceCartService,
+  DeleteProductFromCartService
 } from '../../services/CartService';
 import { UpdateProductFromCartService } from '../../services/CartService';
 import { ProductsResponse } from '../../services/CartService';
@@ -30,7 +31,8 @@ import {
   Actions,
   TextDelete,
   PriceItem,
-  TotalPriceText
+  TotalPriceText,
+  EmptyCartText
 } from './styles';
 
 type FormElements = HTMLFormControlsCollection & {
@@ -108,6 +110,23 @@ export default function Cart(): JSX.Element {
     setTotalPrice(await getTotalPrice());
   }
 
+  async function deleteProductFromCart(id: string) {
+    await DeleteProductFromCartService(String(token), id);
+    setProducts(await getProductsCart());
+    setTotalPrice(await getTotalPrice());
+
+    toast('Produto removido do carrinho!',
+      {
+        position: "top-right",
+        style: {
+          borderRadius: '8px',
+          background: '#7bcc39',
+          color: '#fff',
+        },
+      }
+    );
+  };
+
   useEffect(() => {
     (async () => setProducts(await getProductsCart()))();
   }, [getProductsCart, token]);
@@ -128,49 +147,57 @@ export default function Cart(): JSX.Element {
       </TopCart>
       <HorizontalLine marginTop={-4} minWidth={70} borderWidth={2} />
 
-      <CartContents>
-        {products.length > 0 && (
-          products.map(product => (
-            <>
-              <CartItem>
-              <ItemContent>
-                <ImageItem 
-                  src={require(`../../../../backend/public/uploads/${product.file_id.filename}`).default} 
-                  alt={product.file_id.filename}
-                />
-                <div>
-                  <NameItem>{product.name}</NameItem>
-                  <Actions>
-                    <form onSubmit={submitForm}>
-                      <InputItem 
-                        type='number'
-                        id='inputQuantity'
-                        {...register('quantity', { required: true, value: product.quantity })}
-                      />
-                      <InputItem 
-                        hidden
-                        type='text'
-                        id='inputId'
-                        {...register('id', { value: product._id })}
-                      />
-                      <ButtonItem type='submit'>Atualizar</ButtonItem>
-                    </form>
-                    <VerticalLine />
-                    <TextDelete>Excluir</TextDelete>
-                  </Actions>
-                </div>
-              </ItemContent>
-              <PriceItem>R$ {product.price}</PriceItem>
-            </CartItem>
-            <HorizontalLine minWidth={100} borderWidth={1} />
-            </>
-          ))
-        )}
-      </CartContents>
-      <TotalPriceText>
-        Preço Total({products.length === 1 ? '1 item' : `${products.length} itens`}): 
-        <strong> R$ {totalPrice}</strong>
-        </TotalPriceText>
+      {products.length > 0 && (
+        <>
+          <CartContents>
+            {products.map(product => (
+              <>
+                <CartItem>
+                <ItemContent>
+                  <ImageItem 
+                    src={require(`../../../../backend/public/uploads/${product.file_id.filename}`).default} 
+                    alt={product.file_id.filename}
+                  />
+                  <div>
+                    <NameItem>{product.name}</NameItem>
+                    <Actions>
+                      <form onSubmit={submitForm}>
+                        <InputItem 
+                          type='number'
+                          id='inputQuantity'
+                          {...register('quantity', { required: true, value: product.quantity })}
+                        />
+                        <InputItem 
+                          hidden
+                          type='text'
+                          id='inputId'
+                          {...register('id', { value: product._id })}
+                        />
+                        <ButtonItem type='submit'>Atualizar</ButtonItem>
+                      </form>
+                      <VerticalLine />
+                      <TextDelete onClick={() => deleteProductFromCart(product._id)}>
+                        Excluir
+                      </TextDelete>
+                    </Actions>
+                  </div>
+                </ItemContent>
+                <PriceItem>R$ {product.price}</PriceItem>
+              </CartItem>
+              <HorizontalLine minWidth={100} borderWidth={1} />
+              </>
+            ))}
+          </CartContents>
+          <TotalPriceText>
+            Preço Total({`${products.length} ${products.length <= 1 ? 'item' : 'itens'}`}): 
+            <strong> R$ {totalPrice}</strong>
+          </TotalPriceText>
+        </>
+      )}
+
+      {!products.length && (
+        <EmptyCartText>Carrinho vazio!</EmptyCartText>
+      )}
     </Container>
   );
 };
