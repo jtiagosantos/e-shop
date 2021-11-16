@@ -53,6 +53,21 @@ class CartController {
       res.status(500).json({ error: error.message });
     }
   };
+
+  async resumeCart(req, res) {
+    try {
+      const products = await Cart.find();
+      let total = 0;
+
+      for(let product of products) {
+        total += (product.price * product.quantity);
+      }
+
+      res.status(200).json(total);
+    } catch(error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
 };
 
 module.exports = new CartController();

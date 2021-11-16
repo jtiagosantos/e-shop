@@ -1,9 +1,12 @@
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, useEffect, FormEvent, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css'; 
 
-import { GetProductsFromCartService } from '../../services/CartService';
+import { 
+  GetProductsFromCartService, 
+  GetTotalPriceCartService 
+} from '../../services/CartService';
 import { UpdateProductFromCartService } from '../../services/CartService';
 import { ProductsResponse } from '../../services/CartService';
 
@@ -26,7 +29,8 @@ import {
   ButtonItem,
   Actions,
   TextDelete,
-  PriceItem
+  PriceItem,
+  TotalPriceText
 } from './styles';
 
 type FormElements = HTMLFormControlsCollection & {
@@ -45,10 +49,26 @@ type Product = {
 
 export default function Cart(): JSX.Element {
   const [products, setProducts] = useState<ProductsResponse[]>([]);
+  const [totalPrice, setTotalPrice] = useState<number | undefined>(0);
 
   const { token } = useAuthContext();
 
   const { register } = useForm<Product>();
+
+  const getTotalPrice = useCallback(async () => {
+    if(String(token)) {
+      const data = await GetTotalPriceCartService(String(token));
+      return data;
+    }
+  }, [token]);
+
+  const getProductsCart = useCallback(async () => {
+    if(String(token)) {
+      const data = await GetProductsFromCartService(String(token));
+      return data;
+    }
+    return [];
+  }, [token]);
 
   async function submitForm(event: FormEvent<InputFormElements>) {
     event.preventDefault();
@@ -83,17 +103,18 @@ export default function Cart(): JSX.Element {
         },
       }
     );
+
+    setProducts(await getProductsCart());
+    setTotalPrice(await getTotalPrice());
   }
 
   useEffect(() => {
-    async function fetchProductsCart() {
-      if(String(token)) {
-        const data = await GetProductsFromCartService(String(token));
-        setProducts(data);
-      }
-    }
-    fetchProductsCart();
-  }, [token]);
+    (async () => setProducts(await getProductsCart()))();
+  }, [getProductsCart, token]);
+
+  useEffect(() => {
+    (async () => setTotalPrice(await getTotalPrice()))();
+  }, [getTotalPrice]);
 
   return(
     <Container>
@@ -146,6 +167,10 @@ export default function Cart(): JSX.Element {
           ))
         )}
       </CartContents>
+      <TotalPriceText>
+        Preço Total({products.length === 1 ? '1 item' : `${products.length} itens`}): 
+        <strong> R$ {totalPrice}</strong>
+        </TotalPriceText>
     </Container>
   );
 };

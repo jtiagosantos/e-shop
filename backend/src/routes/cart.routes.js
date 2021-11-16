@@ -8,5 +8,6 @@ route.post('/cart/add_product/:file_id', verifyToken, CartController.addProduct)
 route.get('/cart/read_products', verifyToken, CartController.readProducts);
 route.put('/cart/update_product/:id', verifyToken, CartController.updateProduct);
 route.delete('/cart/delete_product/:id', verifyToken, CartController.deleteProduct);
+route.get('/cart/resume', verifyToken, CartController.resumeCart);
 
 module.exports = route;

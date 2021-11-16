@@ -49,10 +49,28 @@ export const VerticalLine = styled.hr`
 
 export const CartContents = styled.div`
   min-width: 70%;
+  max-height: 338px;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 5px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+      width: 7px;               
+  }
+  &::-webkit-scrollbar-track {
+      background: gray;        
+  }
+  &::-webkit-scrollbar-thumb {
+      background-color: #377A8B;    
+      border-radius: 8px;       
+  }
 `;
 
 export const CartItem = styled.div`
@@ -130,4 +148,13 @@ export const PriceItem = styled.h6`
   color: rgba(20, 20, 20, 0.8);
   font-weight: 600;
   font-size: 20px;
+`;
+
+export const TotalPriceText = styled.p`
+  min-width: 70%;
+  text-align: right;
+  color: rgba(20, 20, 20, 0.7);
+  margin-top: 20px;
+  font-size: 20px;
+  padding-right: 5px;
 `;

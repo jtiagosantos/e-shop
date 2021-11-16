@@ -49,9 +49,19 @@ async function UpdateProductFromCartService(token: string, id: string, body: Bod
   })
 };
 
+async function GetTotalPriceCartService(token: string): Promise<number> {
+  const { data } = await api.get('api/v1/cart/resume', {
+    headers: {
+      'x-access-token': token
+    }
+  });
+  return Number(data);
+}
+
 export { 
   AddProductToCartService, 
   GetProductsFromCartService,
-  UpdateProductFromCartService
+  UpdateProductFromCartService,
+  GetTotalPriceCartService
 };
 export type { ProductsResponse };
