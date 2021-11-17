@@ -50,7 +50,7 @@ export default function Product({ match }: ProductProps): JSX.Element {
 
   const { openModal, setOpenModal } = useModalContext();
   const { isProductDeleted,isProductUpdated, setIsProductUpdated } = useProductContext();
-  const { token } = useAuthContext();
+  const { token, isAdmin } = useAuthContext();
 
   const history = useHistory();
 
@@ -186,10 +186,12 @@ export default function Product({ match }: ProductProps): JSX.Element {
           <Description>{product?.product_id.description}</Description>
         </BottomProductContainer>
 
-        <IconContainer>
-          <Icon className='far fa-trash-alt' onClick={() => setOpenModal(true)} />
-          <Icon className='far fa-edit' onClick={navigateToProductUpdatePage} />
-        </IconContainer>
+        {Number(isAdmin) === 1 && (
+          <IconContainer>
+            <Icon className='far fa-trash-alt' onClick={() => setOpenModal(true)} />
+            <Icon className='far fa-edit' onClick={navigateToProductUpdatePage} />
+          </IconContainer>
+        )}
       </ProductContainer>
    </Container>
   );

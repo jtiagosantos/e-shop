@@ -49,7 +49,7 @@ export const VerticalLine = styled.hr`
 
 export const CartContents = styled.div`
   min-width: 70%;
-  max-height: 338px;
+  max-height: 370px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -86,11 +86,21 @@ export const ItemContent = styled.div`
   gap: 10px;
 `;
 
-export const ImageItem = styled.img`
-  max-width: 125px;
-  max-height: 125px;
-  border-radius: 5px;
+export const ImageItemContainer = styled.div`
+  width: 125px;
+  max-height: 180px;
   background: #fff;
+  border-radius: 5px;
+  padding: 5px; 
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ImageItem = styled.img`
+  max-width: 100%;
 `;
 
 export const NameItem = styled.p`

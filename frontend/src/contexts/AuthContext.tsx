@@ -5,6 +5,8 @@ type TypeAuthContext = {
   setToken: Dispatch<SetStateAction<string | null>>,
   username: string | null,
   setUsername: Dispatch<SetStateAction<string | null>>,
+  isAdmin: string | null,
+  setIsAdmin: Dispatch<SetStateAction<string | null>>,
 };
 
 export const AuthContext = createContext({} as TypeAuthContext);
@@ -16,6 +18,7 @@ type AuthContextProviderProps = {
 export function AuthContextProvider({ children }: AuthContextProviderProps): JSX.Element {
   const [token, setToken] = useState<string | null>('');
   const [username, setUsername] = useState<string | null>('');
+  const [isAdmin, setIsAdmin] = useState<string | null>('');
 
   useEffect(() => {
     const tokenStorage = localStorage.getItem('@eshop:token');
@@ -40,9 +43,28 @@ export function AuthContextProvider({ children }: AuthContextProviderProps): JSX
       setUsername(userStorage);
     }
   }, [username]);
+
+  useEffect(() => {
+    const isAdminStorage = localStorage.getItem('@eshop:is_admin');
+
+    if(!isAdminStorage) {
+      localStorage.setItem('@eshop:is_admin', String(isAdmin));
+      const isAdminStorage = localStorage.getItem('@eshop:is_admin');
+      setIsAdmin(isAdminStorage);
+    }else {
+      setIsAdmin(isAdminStorage);
+    }
+  }, [isAdmin]);
   
   return(
-    <AuthContext.Provider value={{ token, setToken, username, setUsername }}>
+    <AuthContext.Provider value={{ 
+      token, 
+      setToken, 
+      username, 
+      setUsername,
+      isAdmin,
+      setIsAdmin
+    }}>
       {children}
     </AuthContext.Provider>
   );

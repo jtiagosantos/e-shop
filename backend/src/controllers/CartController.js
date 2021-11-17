@@ -56,7 +56,7 @@ class CartController {
 
   async resumeCart(req, res) {
     try {
-      const products = await Cart.find();
+      const products = await Cart.find({ user_id: req.userId });
       let total = 0;
 
       for(let product of products) {

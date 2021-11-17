@@ -21,7 +21,7 @@ type NavbarProps = {
 
 export default function Navbar({ showOnlyTitle = false }: NavbarProps): JSX.Element {
   const { search, setSearch } = useSearchContext();
-  const { setToken, setUsername } = useAuthContext();
+  const { setToken, setUsername, isAdmin, setIsAdmin } = useAuthContext();
 
   const token = localStorage.getItem('@eshop:token');
   const username = localStorage.getItem('@eshop:username');
@@ -44,6 +44,7 @@ export default function Navbar({ showOnlyTitle = false }: NavbarProps): JSX.Elem
     localStorage.clear();
     setToken('');
     setUsername('');
+    setIsAdmin('');
   };
 
   return(
@@ -74,12 +75,16 @@ export default function Navbar({ showOnlyTitle = false }: NavbarProps): JSX.Elem
             <Action>Sobre</Action>
           </ActionsContainer>
           <IconsContainer>
-            <Link to='/add_product'>
-              <Icon className="fas fa-plus-circle"></Icon>
-            </Link>
-            <Link to='/cart'>
-              <Icon className="fas fa-shopping-cart"></Icon>
-            </Link>
+            {Number(isAdmin) === 1 && (
+              <Link to='/add_product'>
+                <Icon className="fas fa-plus-circle"></Icon>
+              </Link>
+            )}
+            {token && (
+              <Link to='/cart'>
+                <Icon className="fas fa-shopping-cart"></Icon>
+              </Link>
+            )}
           </IconsContainer>
         </>
       )}

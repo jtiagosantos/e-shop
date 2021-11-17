@@ -8,6 +8,7 @@ type AuthenticateUser = {
 type ResponseAuthenticate = {
   token: string,
   username: string,
+  admin: boolean,
 };
 
 type RegisterUser = {

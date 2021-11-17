@@ -24,6 +24,7 @@ import {
   CartContents,
   CartItem,
   ItemContent,
+  ImageItemContainer,
   ImageItem,
   NameItem,
   InputItem,
@@ -154,10 +155,12 @@ export default function Cart(): JSX.Element {
               <>
                 <CartItem>
                 <ItemContent>
-                  <ImageItem 
-                    src={require(`../../../../backend/public/uploads/${product.file_id.filename}`).default} 
-                    alt={product.file_id.filename}
-                  />
+                  <ImageItemContainer>
+                    <ImageItem 
+                      src={require(`../../../../backend/public/uploads/${product.file_id.filename}`).default} 
+                      alt={product.file_id.filename}
+                    />
+                  </ImageItemContainer>
                   <div>
                     <NameItem>{product.name}</NameItem>
                     <Actions>
