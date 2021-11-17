@@ -59,6 +59,7 @@ class ProductController {
       else res.status(404).json({ error: false, message: 'Product not found!' });
 
       await syncRedisSet('products', '');
+      await syncRedisSet('files', '');
     } catch(error) {
       res.status(500).json({ error: error.message });
     }
