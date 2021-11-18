@@ -9,13 +9,9 @@ const CartSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: 'File'
   },
-  name: {
-    type: String,
-    required: true
-  },
-  price: {
-    type: Number,
-    required: true
+  product_id: {
+    type: mongoose.Types.ObjectId,
+    ref: 'Product'
   },
   quantity: {
     type: Number,

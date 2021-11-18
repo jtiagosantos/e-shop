@@ -95,8 +95,7 @@ export default function Product({ match }: ProductProps): JSX.Element {
     if(token) {
       try {
         await AddProductToCartService(product?._id, {
-          name: product?.product_id.name,
-          price: product?.product_id.price,
+          product_id: product?.product_id._id,
           quantity: 1
         }, String(token))
   

@@ -162,7 +162,7 @@ export default function Cart(): JSX.Element {
                     />
                   </ImageItemContainer>
                   <div>
-                    <NameItem>{product.name}</NameItem>
+                    <NameItem>{product.product_id.name}</NameItem>
                     <Actions>
                       <form onSubmit={submitForm}>
                         <InputItem 
@@ -185,7 +185,7 @@ export default function Cart(): JSX.Element {
                     </Actions>
                   </div>
                 </ItemContent>
-                <PriceItem>R$ {product.price}</PriceItem>
+                <PriceItem>R$ {product.product_id.price}</PriceItem>
               </CartItem>
               <HorizontalLine minWidth={100} borderWidth={1} />
               </>

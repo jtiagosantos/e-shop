@@ -1,8 +1,7 @@
 import { api } from "../api";
 
 type BodyProductToCart = {
-  name: string | undefined,
-  price: number | undefined,
+  product_id: string | undefined,
   quantity: number,
 };
 
@@ -11,8 +10,10 @@ type ProductsResponse = {
   file_id: {
     filename: string,
   },
-  name: string,
-  price: number,
+  product_id: {
+    name: string,
+    price: number,
+  }
   quantity: number,
 };
 

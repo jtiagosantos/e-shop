@@ -18,10 +18,9 @@ class CartController {
 
   async readProducts(req, res) {
     try {
-      const products = await Cart.find({ user_id: req.userId }).populate(
-        'file_id', 
-        'filename'
-      )
+      const products = await Cart.find({ user_id: req.userId })
+        .populate('file_id', 'filename')
+        .populate('product_id', 'price name');
       res.status(200).json(products);
     } catch(error) {
       res.status(500).json({ error: error.message });
@@ -56,11 +55,12 @@ class CartController {
 
   async resumeCart(req, res) {
     try {
-      const products = await Cart.find({ user_id: req.userId });
+      const products = await Cart.find({ user_id: req.userId })
+        .populate('product_id', 'price');
       let total = 0;
 
       for(let product of products) {
-        total += (product.price * product.quantity);
+        total += (product.product_id.price * product.quantity);
       }
 
       res.status(200).json(total);
