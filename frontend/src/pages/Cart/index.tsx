@@ -7,9 +7,9 @@ import {
   GetProductsFromCartService, 
   GetTotalPriceCartService,
   DeleteProductFromCartService
-} from '../../services/CartService';
-import { UpdateProductFromCartService } from '../../services/CartService';
-import { ProductsResponse } from '../../services/CartService';
+} from '../../services/CartServices';
+import { UpdateProductFromCartService } from '../../services/CartServices';
+import { ProductsResponse } from '../../services/CartServices';
 
 import { useAuthContext } from '../../hooks/useAuthContext';
 

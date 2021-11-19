@@ -17,6 +17,12 @@ type RegisterUser = {
   password: string,
 };
 
+type ResponseToGetAdministrators = {
+  _id: string,
+  name: string,
+  email: string,
+};
+
 async function AuthenticateUserService(body: AuthenticateUser) {
   const { data } = await api.post<ResponseAuthenticate>('api/v1/login', body);
   return data;
@@ -26,5 +32,14 @@ async function RegisterUserService(body: RegisterUser) {
   await api.post('/api/v1/register', body);
 }
 
-export { AuthenticateUserService, RegisterUserService };
+async function getAdministratorsService() {
+  const { data } = await api.get<ResponseToGetAdministrators[]>('/api/v1/administrators');
+  return data;
+};
+
+export { 
+  AuthenticateUserService, 
+  RegisterUserService, 
+  getAdministratorsService 
+};
 export type { RegisterUser };

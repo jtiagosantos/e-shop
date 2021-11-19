@@ -69,4 +69,8 @@ export const Icon = styled.i`
   font-size: 26px;
   color: #fff;
   cursor: pointer;
+
+  &:hover {
+    filter: brightness(0.9);
+  }
 `;

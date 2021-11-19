@@ -5,6 +5,14 @@ const validator = require('validator');
 require('dotenv').config();
 
 class UserController {
+  async index(req, res) {
+    try {
+      const users = await User.find({ admin: true });
+      res.status(200).json(users);
+    } catch(error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
   async register(req, res) {
     const body = req.body;
     const { email } = req.body;

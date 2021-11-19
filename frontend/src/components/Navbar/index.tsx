@@ -76,9 +76,14 @@ export default function Navbar({ showOnlyTitle = false }: NavbarProps): JSX.Elem
           </ActionsContainer>
           <IconsContainer>
             {Number(isAdmin) === 1 && (
-              <Link to='/add_product'>
-                <Icon className="fas fa-plus-circle"></Icon>
-              </Link>
+              <>
+                <Link to='/administrators'>
+                  <Icon className="fas fa-users"></Icon>
+                </Link>
+                <Link to='/add_product'>
+                  <Icon className="fas fa-plus-circle"></Icon>
+                </Link>
+              </>
             )}
             {token && (
               <Link to='/cart'>

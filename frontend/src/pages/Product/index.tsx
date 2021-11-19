@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 
 import { GetProductService } from '../../services/ProductServices';
 import { TypeProduct } from '../../services/ProductServices';
-import { AddProductToCartService } from '../../services/CartService';
+import { AddProductToCartService } from '../../services/CartServices';
 
 import Navbar from '../../components/Navbar';
 import DeleteProductModal from '../../components/DeleteProductModal';
