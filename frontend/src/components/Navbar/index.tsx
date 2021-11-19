@@ -1,4 +1,7 @@
+import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+
+import Loading from '../Loading';
 
 import { 
   Container, 
@@ -20,8 +23,10 @@ type NavbarProps = {
 };
 
 export default function Navbar({ showOnlyTitle = false }: NavbarProps): JSX.Element {
+  const [isLoading, setIsLoading] = useState(false);
+
   const { search, setSearch } = useSearchContext();
-  const { setToken, setUsername, isAdmin, setIsAdmin } = useAuthContext();
+  const { isAdmin } = useAuthContext();
 
   const token = localStorage.getItem('@eshop:token');
   const username = localStorage.getItem('@eshop:username');
@@ -40,15 +45,10 @@ export default function Navbar({ showOnlyTitle = false }: NavbarProps): JSX.Elem
     history.push('/');
   };
 
-  function handleLogout() {
-    localStorage.clear();
-    setToken('');
-    setUsername('');
-    setIsAdmin('');
-  };
-
   return(
     <Container>
+      {isLoading && <Loading setIsLoading={setIsLoading} />}
+
       <TitleContainer onClick={navigateToHomePage}>
         <Title color="rgba(45, 71, 120, 0.9);">e</Title>
         <Title color="#cbe5e0">Shop</Title>
@@ -70,7 +70,7 @@ export default function Navbar({ showOnlyTitle = false }: NavbarProps): JSX.Elem
                 <Action onClick={navigateToRegisterPage}>Cadastrar</Action>
               </>
             ) : (
-              <Action onClick={handleLogout}>Sair({username})</Action>
+              <Action onClick={() => setIsLoading(true)}>Sair({username})</Action>
             )}
             <Action>Sobre</Action>
           </ActionsContainer>
