@@ -69,7 +69,12 @@ class UserController {
 
       delete user.password;
 
+      if(user.admin) {
+        return res.status(200).json({ token, username: user.name, admin: user.admin, id: user._id });
+      }
+
       return res.status(200).json({ token, username: user.name, admin: user.admin });
+
     } catch(error) {
       res.status(500).json({ error: error.message });
     }
