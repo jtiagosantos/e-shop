@@ -6,6 +6,7 @@ type AuthenticateUser = {
 };
 
 type ResponseAuthenticate = {
+  id: string,
   token: string,
   username: string,
   admin: boolean,

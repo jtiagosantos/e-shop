@@ -29,7 +29,7 @@ export default function Login(): JSX.Element {
   const [isRedirectToHomePage, setIsRedirectToHomePage] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { token, setToken, setUsername, setIsAdmin } = useAuthContext();
+  const { token, setToken, setUsername, setIsAdmin, setAdminId } = useAuthContext();
 
   const history = useHistory();
 
@@ -38,10 +38,11 @@ export default function Login(): JSX.Element {
   async function onSubmitForm(data: User) {
     setIsLoading(true);
     try {
-      const { token, username, admin } = await AuthenticateUserService(data);
+      const { token, username, admin, id } = await AuthenticateUserService(data);
       setToken(token);
       setUsername(username);
       setIsAdmin(admin ? '1' : '0');
+      setAdminId(id);
       setTimeout(() => {
         setIsLoading(false);
         toast('Logado com sucesso!\nRedirecionando...',
