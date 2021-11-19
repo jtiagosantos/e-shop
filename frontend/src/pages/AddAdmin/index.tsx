@@ -61,7 +61,7 @@ export default function AddAdmin(): JSX.Element {
 
         setTimeout(() => history.push('/administrators'), 6000);
       }
-    }catch(error: any) {
+    }catch(_) {
       setTimeout(() => {
         toast('E-mail informado já em uso!',
           {

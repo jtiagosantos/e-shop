@@ -1,7 +1,12 @@
-import { useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css'; 
 
-import { getAdministratorsService } from '../../services/UserServices';
+import { 
+  getAdministratorsService,
+  DeleteAdministratorService
+} from '../../services/UserServices';
 
 import Navbar from '../../components/Navbar';
 
@@ -35,12 +40,34 @@ export default function Admin(): JSX.Element {
     getAdministrators();
   }, []);
 
+  async function handleDeleteAdministrator(id: string) {
+    try {
+      await DeleteAdministratorService(id);
+      setAdministrators(await getAdministratorsService());
+
+      toast('Administrador removido com sucesso!',
+        {
+          position: "top-right",
+          style: {
+            borderRadius: '8px',
+            background: '#7bcc39',
+            color: '#fff',
+          },
+        }
+      );
+    } catch(error: any) {
+      console.log(`Error: ${error.message}`);
+    }
+  };
+
   function navigateToAddAdminPage() {
     history.push('/administrator/add');
   };
 
   return(
     <Container>
+      <ToastContainer />
+
       <Navbar showOnlyTitle={true} />
 
       <TopAdmin>
@@ -64,7 +91,10 @@ export default function Admin(): JSX.Element {
                 <td>{administrator.name}</td>
                 <td>{administrator.email}</td>
                 <td>
-                  <RemoveIcon className='fas fa-minus-circle' />
+                  <RemoveIcon 
+                    className='fas fa-minus-circle' 
+                    onClick={() => handleDeleteAdministrator(administrator._id)}
+                  />
                 </td>
               </tr>
             ))}

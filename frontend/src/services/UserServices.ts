@@ -38,9 +38,14 @@ async function getAdministratorsService() {
   return data;
 };
 
+async function DeleteAdministratorService(id: string) {
+  await api.delete(`/api/v1/administrator/delete/${id}`);
+}
+
 export { 
   AuthenticateUserService, 
   RegisterUserService, 
-  getAdministratorsService 
+  getAdministratorsService,
+  DeleteAdministratorService
 };
 export type { RegisterUser };
