@@ -8,6 +8,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Cart from "../pages/Cart";
 import Admin from "../pages/Admin";
+import AddAdmin from "../pages/AddAdmin";
 
 export default function Routes() {
   return(
@@ -20,6 +21,7 @@ export default function Routes() {
       <Route exact path='/register' component={Register} />
       <Route exact path='/cart' component={Cart} />
       <Route exact path='/administrators' component={Admin} />
+      <Route exact path='/administrator/add' component={AddAdmin} />
     </>
   );
 };

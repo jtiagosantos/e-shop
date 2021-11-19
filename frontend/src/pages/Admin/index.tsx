@@ -1,3 +1,4 @@
+import { useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import { getAdministratorsService } from '../../services/UserServices';
@@ -23,6 +24,8 @@ type AdministratorProps = {
 export default function Admin(): JSX.Element {
   const [administrators, setAdministrators] = useState<AdministratorProps[]>([]);
 
+  const history = useHistory();
+
   useEffect(() => {
     async function getAdministrators() {
       const data = await getAdministratorsService();
@@ -32,13 +35,17 @@ export default function Admin(): JSX.Element {
     getAdministrators();
   }, []);
 
+  function navigateToAddAdminPage() {
+    history.push('/administrator/add');
+  };
+
   return(
     <Container>
       <Navbar showOnlyTitle={true} />
 
       <TopAdmin>
         <Title>Adminstrador(es)</Title>
-        <IconAddAdmin className='fas fa-user-plus' />
+        <IconAddAdmin className='fas fa-user-plus' onClick={navigateToAddAdminPage} />
       </TopAdmin>
       <HorizontalLine />
 
