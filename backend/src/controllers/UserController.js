@@ -13,6 +13,19 @@ class UserController {
       res.status(500).json({ error: error.message });
     }
   };
+
+  async delete(req, res) {
+    try {
+      const { id } = req.params;
+      const user = await User.findByIdAndDelete(id);
+
+      if(user) res.status(200).json({ message: 'User deleted!' });
+      else res.status(404).json({ message: 'User not found!' });
+    } catch(error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
   async register(req, res) {
     const body = req.body;
     const { email } = req.body;
