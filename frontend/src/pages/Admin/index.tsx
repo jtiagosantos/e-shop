@@ -58,17 +58,17 @@ export default function Admin(): JSX.Element {
               <th scope="col"></th>
             </tr>
           </thead>
-          {administrators.map(administrator => (
-            <tbody>
-              <tr>
+          <tbody>
+            {administrators.map(administrator => (
+              <tr key={administrator._id}>
                 <td>{administrator.name}</td>
                 <td>{administrator.email}</td>
                 <td>
                   <RemoveIcon className='fas fa-minus-circle' />
                 </td>
               </tr>
-            </tbody>
-          ))}
+            ))}
+          </tbody>
         </Table>
       )}
     </Container>
