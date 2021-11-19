@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useHistory, Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css'; 
 
@@ -26,7 +26,6 @@ type User = {
 };
 
 export default function Register(): JSX.Element {
-  const [isRedirectToLoginPage, setIsRedirectToLoginPage] = useState(false);
   const [isShowErrorPasswordsDifferent, setIsShowErrorPasswordsDifferent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isUserRegistered, setIsUserRegistered] = useState(false);
@@ -61,7 +60,7 @@ export default function Register(): JSX.Element {
           );
         }, 3000);
         
-      setTimeout(() => setIsRedirectToLoginPage(true), 6000);
+      setTimeout(() => history.push('/login'), 6000);
       }
     } catch(_) {
       setTimeout(() => {
@@ -94,8 +93,6 @@ export default function Register(): JSX.Element {
   return(
     <Container>
       <ToastContainer />
-
-      {isRedirectToLoginPage && <Redirect to='/login' />}
 
       <Navbar showOnlyTitle={true} />
 
