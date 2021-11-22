@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css'; 
 
+import { useAuthContext } from '../../hooks/useAuthContext';
+
 import { 
   getAdministratorsService,
   DeleteAdministratorService
@@ -30,6 +32,7 @@ export default function Admin(): JSX.Element {
   const [administrators, setAdministrators] = useState<AdministratorProps[]>([]);
 
   const history = useHistory();
+  const { adminId, setToken, setUsername, setIsAdmin } = useAuthContext();
 
   useEffect(() => {
     async function getAdministrators() {
@@ -43,6 +46,14 @@ export default function Admin(): JSX.Element {
   async function handleDeleteAdministrator(id: string) {
     try {
       await DeleteAdministratorService(id);
+      if(id === adminId) {
+        localStorage.clear();
+        setToken('');
+        setUsername('');
+        setIsAdmin('');
+        history.push('/');
+      };
+
       setAdministrators(await getAdministratorsService());
 
       toast('Administrador removido com sucesso!',
