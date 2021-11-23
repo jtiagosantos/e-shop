@@ -1,5 +1,7 @@
 import { Route } from "react-router-dom";
 
+import { useAuthContext } from "../hooks/useAuthContext";
+
 import Home from "../pages/Home";
 import Product from "../pages/Product";
 import AddProduct from "../pages/AddProduct";
@@ -10,19 +12,22 @@ import Cart from "../pages/Cart";
 import Admin from "../pages/Admin";
 import AddAdmin from "../pages/AddAdmin";
 import About from "../pages/About";
+import Unauthorized from "../pages/Unauthorized";
 
 export default function Routes() {
+  const { isAdmin, token } = useAuthContext();
+
   return(
     <>
       <Route exact path='/' component={Home} />
       <Route exact path='/product/:id' component={Product} />
-      <Route exact path='/add_product' component={AddProduct} />
-      <Route exact path='/update_product/:id/:product_id' component={UpdateProduct} />
+      <Route exact path='/add_product' component={isAdmin ? AddProduct : Unauthorized} />
+      <Route exact path='/update_product/:id/:product_id' component={isAdmin ? UpdateProduct : Unauthorized} />
       <Route exact path='/login' component={Login} />
       <Route exact path='/register' component={Register} />
-      <Route exact path='/cart' component={Cart} />
-      <Route exact path='/administrators' component={Admin} />
-      <Route exact path='/administrator/add' component={AddAdmin} />
+      <Route exact path='/cart' component={token ? Cart : Unauthorized} />
+      <Route exact path='/administrators' component={isAdmin ? Admin : Unauthorized} />
+      <Route exact path='/administrator/add' component={isAdmin ? AddAdmin : Unauthorized} />
       <Route exact path='/about' component={About} />
     </>
   );
