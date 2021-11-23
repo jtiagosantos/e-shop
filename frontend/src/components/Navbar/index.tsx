@@ -45,6 +45,10 @@ export default function Navbar({ showOnlyTitle = false }: NavbarProps): JSX.Elem
     history.push('/');
   };
 
+  function navigateToAboutPage() {
+    history.push('/about');
+  };
+
   return(
     <Container>
       {isLoading && <Loading setIsLoading={setIsLoading} />}
@@ -72,7 +76,7 @@ export default function Navbar({ showOnlyTitle = false }: NavbarProps): JSX.Elem
             ) : (
               <Action onClick={() => setIsLoading(true)}>Sair({username})</Action>
             )}
-            <Action>Sobre</Action>
+            <Action onClick={navigateToAboutPage}>Sobre</Action>
           </ActionsContainer>
           <IconsContainer>
             {Number(isAdmin) === 1 && (

@@ -9,6 +9,7 @@ import Register from "../pages/Register";
 import Cart from "../pages/Cart";
 import Admin from "../pages/Admin";
 import AddAdmin from "../pages/AddAdmin";
+import About from "../pages/About";
 
 export default function Routes() {
   return(
@@ -22,6 +23,7 @@ export default function Routes() {
       <Route exact path='/cart' component={Cart} />
       <Route exact path='/administrators' component={Admin} />
       <Route exact path='/administrator/add' component={AddAdmin} />
+      <Route exact path='/about' component={About} />
     </>
   );
 };
