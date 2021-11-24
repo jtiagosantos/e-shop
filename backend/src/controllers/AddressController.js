@@ -3,8 +3,8 @@ const Address = require('../models/Address');
 class AddressController {
   async index(req, res) {
     try {
-      const addresses = await Address.find();
-      res.status(200).json({ addresses });
+      const addresses = await Address.find({ user_id: req.userId });
+      res.status(200).json(addresses);
     } catch(error) {
       res.status(500).json({ error: error.message });
     }
@@ -15,7 +15,7 @@ class AddressController {
       const { body } = req;
       body.user_id = req.userId;
       const address = await new Address(body).save();
-      res.status(201).json({ address });
+      res.status(201).json(address);
     } catch(error) {
       res.status(500).json({ error: error.message });
     }

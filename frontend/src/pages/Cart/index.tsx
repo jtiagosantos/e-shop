@@ -1,4 +1,5 @@
 import { useState, useEffect, FormEvent, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css'; 
@@ -14,6 +15,7 @@ import { ProductsResponse } from '../../services/CartServices';
 import { useAuthContext } from '../../hooks/useAuthContext';
 
 import Navbar from '../../components/Navbar';
+import LoadingV2 from '../../components/LoadingV2';
 
 import { 
   Container, 
@@ -33,7 +35,9 @@ import {
   TextDelete,
   PriceItem,
   TotalPriceText,
-  EmptyCartText
+  EmptyCartText,
+  ButtonContainer,
+  Button
 } from './styles';
 
 type FormElements = HTMLFormControlsCollection & {
@@ -53,8 +57,11 @@ type Product = {
 export default function Cart(): JSX.Element {
   const [products, setProducts] = useState<ProductsResponse[]>([]);
   const [totalPrice, setTotalPrice] = useState<number | undefined>(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { token } = useAuthContext();
+  
+  const history = useHistory();
 
   const { register } = useForm<Product>();
 
@@ -136,9 +143,19 @@ export default function Cart(): JSX.Element {
     (async () => setTotalPrice(await getTotalPrice()))();
   }, [getTotalPrice]);
 
+  function navigateToChooseAddressPage() {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      history.push('/address');
+    }, 3000);
+  };
+
   return(
     <Container>
       <ToastContainer />
+
+      {isLoading && <LoadingV2 />}
 
       <Navbar showOnlyTitle={true} />
 
@@ -195,6 +212,9 @@ export default function Cart(): JSX.Element {
             Preço Total({`${products.length} ${products.length <= 1 ? 'item' : 'itens'}`}): 
             <strong> R$ {totalPrice}</strong>
           </TotalPriceText>
+          <ButtonContainer>
+            <Button onClick={navigateToChooseAddressPage}>Fechar pedido</Button>
+          </ButtonContainer>
         </>
       )}
 

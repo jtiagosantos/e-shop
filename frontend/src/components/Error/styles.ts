@@ -1,7 +1,11 @@
 import styled from "styled-components";
 
 type ContainerProps = {
-  minWidth: number,
+  minWidth?: number,
+};
+
+type ErrorMessageProps = {
+  fontSize?: string,
 };
 
 export const Container = styled.div<ContainerProps>`
@@ -9,9 +13,10 @@ export const Container = styled.div<ContainerProps>`
   max-width: 674px;
 `;
 
-export const ErrorMessage = styled.p`
+export const ErrorMessage = styled.p<ErrorMessageProps>`
   color: #636362;
   margin-bottom: 5px;
+  font-size: ${props => props.fontSize || '1rem'};
 `;
 
 export const ErrorIcon = styled.i`

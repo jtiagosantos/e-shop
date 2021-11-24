@@ -175,3 +175,22 @@ export const EmptyCartText = styled.p`
   font-weight: bold;
   margin-top: 200px;
 `;
+
+export const ButtonContainer = styled.div`
+  min-width: 70%;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+export const Button = styled.button`
+  height: 35px;
+  border: none;
+  border-radius: 5px;
+  background: #377A8B;
+  padding: 0 7px;
+  color: #fff;
+
+  &:hover {
+    filter: brightness(0.9);
+  }
+`;

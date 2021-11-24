@@ -13,6 +13,7 @@ import Admin from "../pages/Admin";
 import AddAdmin from "../pages/AddAdmin";
 import About from "../pages/About";
 import Unauthorized from "../pages/Unauthorized";
+import Address from "../pages/Address";
 
 export default function Routes() {
   const { isAdmin, token } = useAuthContext();
@@ -29,6 +30,7 @@ export default function Routes() {
       <Route exact path='/administrators' component={isAdmin ? Admin : Unauthorized} />
       <Route exact path='/administrator/add' component={isAdmin ? AddAdmin : Unauthorized} />
       <Route exact path='/about' component={About} />
+      <Route exact path='/address' component={token ? Address : Unauthorized} />
     </>
   );
 };
