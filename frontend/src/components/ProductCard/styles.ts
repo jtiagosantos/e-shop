@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   width: 220px;
-  height: 240px;
+  height: 270px;
   background: #fff;
   border-radius: 0 0 5px 5px;
 
@@ -10,7 +10,6 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
 
-  margin-bottom: 70px;
   padding: 5px;
   
   cursor: pointer;
@@ -18,8 +17,7 @@ export const Container = styled.div`
   overflow: hidden;
 
   &:hover {
-    height: 270px;
-    box-shadow: 0px 0px 4px 1px gray;
+    box-shadow: 0px 0px 6px 1px gray;
   }
 `;
 
