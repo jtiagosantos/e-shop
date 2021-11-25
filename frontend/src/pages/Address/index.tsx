@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { useModalContext } from '../../hooks/useModalContext';
 import { useAuthContext } from '../../hooks/useAuthContext';
@@ -8,6 +9,7 @@ import { DeleteAddresService } from '../../services/AddressServices';
 
 import Navbar from '../../components/Navbar';
 import AddAddressModal from '../../components/AddAddressModal';
+import LoadingV2 from '../../components/LoadingV2';
 
 import { 
   Container, 
@@ -34,9 +36,12 @@ type AddressResponse = {
 
 export default function Address(): JSX.Element {
   const [addresses, setAddresses] = useState<AddressResponse[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { openModal, setOpenModal } = useModalContext();
   const { token } = useAuthContext();
+
+  const history = useHistory();
 
   const GetAddresses = useCallback(async () => {
     const data = await GetAdressesService(String(token));
@@ -56,9 +61,15 @@ export default function Address(): JSX.Element {
     }
   };
 
+  function navigateToPaymentPage() {
+    setIsLoading(true);
+    setTimeout(() => history.push('/payment'), 3000);
+  };
+
   return(
     <Container>
       {openModal && <AddAddressModal />}
+      {isLoading && <LoadingV2 />}
 
       <Navbar showOnlyTitle={true} />
 
@@ -97,7 +108,7 @@ export default function Address(): JSX.Element {
 
       {!!addresses.length && 
       <ButtonContainer>
-        <Button>Seguinte</Button>
+        <Button onClick={navigateToPaymentPage}>Seguinte</Button>
       </ButtonContainer>}
     </Container>
   );
