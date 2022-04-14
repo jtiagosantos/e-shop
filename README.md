@@ -75,14 +75,7 @@ $ npm i
 JWT_SECRET_KEY=key
 ```
 
-4️⃣ Start project:
-
-```bash
-$ cd ../backend
-$ docker-compose up --build
-```
-
-5️⃣ Run seed to add admin:
+4️⃣ Run seed to add admin:
 
 ```bash
 $ npm install -g mongo-seeding-cli
@@ -94,6 +87,15 @@ $ seed -u mongodb://127.0.0.1:27017/eshop --drop-database ./database/data
 
 - E-mail: admin_admin42@eshop.com
 - Password: r2kw4ycg
+
+5️⃣ Start project:
+
+```bash
+$ cd ../backend
+$ docker-compose up --build
+$ cd ../frontend
+$ yarn start
+```
 
 <hr>
 
